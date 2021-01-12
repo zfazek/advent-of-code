@@ -16,7 +16,6 @@ public class Main202016 {
         int numberOfThreads = Math.max(cores - 1, 1);
         System.out.format("n: %d\n", numberOfThreads);
         int startIndex = 0;
-        numberOfThreads = 1;
         if (args.length > 0) {
             startIndex = Integer.parseInt(args[0]);
         }
