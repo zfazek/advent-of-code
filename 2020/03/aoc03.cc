@@ -23,7 +23,7 @@ int main () {
     }
     long result = 0;
     int pos = 0;
-    for (const string line : lines) {
+    for (const string &line : lines) {
         const int length = line.size();
         if (line[pos % length] == '#') ++result;
         pos += 3;
