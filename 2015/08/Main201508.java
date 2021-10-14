@@ -34,10 +34,8 @@ public class Main201508 {
 			n += 2;
 			for (int i = 0; i < line.length(); i++) {
 				char c = line.charAt(i);
-				if (c == '"') {
+				if (c == '"' || c == '\\') {
 					n++;
-				} else if (c == '\\') {
-						n++;
 				}
 			}
 		}
