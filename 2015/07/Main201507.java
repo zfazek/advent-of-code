@@ -114,7 +114,7 @@ public class Main201507 {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("07.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2015/07.txt"));
 		one(lines);
 		two(lines);
 	}

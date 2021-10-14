@@ -11,7 +11,7 @@ import java.util.List;
 public class Main201502 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("02.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2015/02.txt"));
 		long result1 = 0;
 		long result2 = 0;
 		for (String line : lines) {

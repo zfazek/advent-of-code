@@ -7,7 +7,7 @@ import java.util.List;
 public class Main201505 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("05.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2015/05.txt"));
 		long n1 = 0;
 		long n2 = 0;
 		for (String line : lines) {
