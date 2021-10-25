@@ -28,7 +28,6 @@ func one(lines []string) {
 					idx += 3
 				}
 			}
-
 		}
 		fmt.Print(idx + 1)
 	}
