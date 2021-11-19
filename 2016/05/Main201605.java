@@ -4,17 +4,20 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Queue;
 
 public class Main201605 {
 	String key = "wtnhxymk";
 	boolean shouldRun = true;
-	int N = 6;
-	List<Worker> workers = new ArrayList<>();
-	Map<Integer, String> hashes = new HashMap<Integer,String>();
-	Object mutex = new Object();
+	int N = 4;
+	List<Md5Hasher> workers = new ArrayList<>();
+	Queue<Integer> numbers = new LinkedList<>();
+	List<String> hashes = new ArrayList<>();
+	Input input = new Input();
+	Object mutexInputQueue = new Object();
+	Object mutexHashes = new Object();
 
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InterruptedException {
 		Main201605 program = new Main201605();
@@ -25,40 +28,38 @@ public class Main201605 {
 	}
 
 	private void start() {
+		input.start();
 		for (int i = 0; i < N; i++) {
-			Worker worker = new Worker(i, N);
+			Md5Hasher worker = new Md5Hasher();
 			workers.add(worker);
 			worker.start();
 		}
 	}
 
 	private void stop() throws InterruptedException {
-		for (Worker worker : workers) {
+		input.join();
+		for (Md5Hasher worker : workers) {
 			worker.join();
 		}
 	}
 
-	private void one() throws NoSuchAlgorithmException {
+	private void one() throws NoSuchAlgorithmException, InterruptedException {
 		long start = System.currentTimeMillis();
-		int n = 0;
 		String hashtext;
 		for (int i = 0; i < 8; i++) {
 			while (true) {
-				synchronized (mutex) {
-					if (hashes.containsKey(n))  {
-						hashtext = hashes.get(n);
-					} else {
+				Thread.sleep(1000);
+				synchronized (mutexHashes) {
+					if (hashes.size() <= i) {
 						continue;
 					}
+					hashtext = hashes.get(i);
 				}
-				if (hashtext.startsWith("00000")) {
-					System.out.print(hashtext.charAt(5));
-					n++;
-					break;
-				}
-				n++;
+				System.out.print(hashtext.charAt(5));
+				break;
 			}
 		}
+		System.out.println();
 		long end = System.currentTimeMillis();
 		System.out.println();
 		System.out.println((end - start) / 1000 + " sec");
@@ -67,28 +68,24 @@ public class Main201605 {
 	private void two() throws NoSuchAlgorithmException, InterruptedException {
 		char[] password = new char[8];
 		long start = System.currentTimeMillis();
-		int n = 0;
 		String hashtext;
+		int n = 0;
 		for (int i = 0; i < 8; i++) {
 			while (true) {
-				synchronized (mutex) {
-					if (hashes.containsKey(n))  {
-						hashtext = hashes.get(n);
-						hashes.remove(n);
-					} else {
+				Thread.sleep(1000);
+				synchronized (mutexHashes) {
+					if (hashes.size() <= n) {
 						continue;
 					}
+					hashtext = hashes.get(n++);
 				}
-				n++;
-				if (hashtext.startsWith("00000")) {
-					char c = hashtext.charAt(5);
-					if (c >= '0' && c <= '7') {
-						if (password[c - '0'] == 0) {
-							password[c - '0'] = hashtext.charAt(6);
-							System.out.format("i: %d, n: %d, idx: %c, char: %c\n", i, n, c, hashtext.charAt(6));
-							System.out.println(password);
-							break;
-						}
+				char c = hashtext.charAt(5);
+				if (c >= '0' && c <= '7') {
+					if (password[c - '0'] == 0) {
+						password[c - '0'] = hashtext.charAt(6);
+						//						System.out.format("i: %d, idx: %c, char: %c\n", i, c, hashtext.charAt(6));
+						System.out.println(password);
+						break;
 					}
 				}
 			}
@@ -99,32 +96,51 @@ public class Main201605 {
 		System.out.println((end - start) / 1000 + " sec");
 	}
 
-	class Worker extends Thread {
-
-		private int i;
-		private int step;
-
-		Worker(int i, int step) {
-			this.i = i;
-			this.step = step;
-		}
+	class Input extends Thread {
 
 		@Override
 		public void run() {
+			int n = 0;
+			while (shouldRun) {
+				synchronized (mutexInputQueue) {
+					if (numbers.size() > 100) {
+						continue;
+					}
+					numbers.add(n++);
+				}
+				if (n == Integer.MAX_VALUE) {
+					System.out.println("Input ends");
+					break;
+				}
+			}
+		}
+	}
+
+	class Md5Hasher extends Thread {
+
+		@Override
+		public void run() {
+			Integer n = 0;
 			MessageDigest md5 = null;
 			try {
 				md5 = MessageDigest.getInstance("MD5");
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
-			int n = i - step;
 			while (shouldRun) {
-				n += step;
+				synchronized (mutexInputQueue) {
+					n = numbers.poll();
+					if (n == null) {
+						continue;
+					}
+				}
 				String plaintext = key + n;
 				md5.update(StandardCharsets.UTF_8.encode(plaintext));
 				String hashtext =  String.format("%032x", new BigInteger(1, md5.digest()));
-				synchronized (mutex) {
-					hashes.put(n, hashtext);
+				if (hashtext.startsWith("00000")) {
+					synchronized (mutexHashes) {
+						hashes.add(hashtext);
+					}
 				}
 			}
 		}
