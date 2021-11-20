@@ -44,7 +44,14 @@ func two() {
 				if c >= '0' && c <= '7' {
 					if password[c-'0'] == 0 {
 						password[c-'0'] = hex[6]
-						print(password)
+						for i := range password {
+							if password[i] == 0 {
+								fmt.Print(" ")
+							} else {
+								fmt.Print(string(password[i]))
+							}
+						}
+						fmt.Println()
 						break
 					}
 				}
