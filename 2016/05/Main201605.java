@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -135,7 +134,7 @@ public class Main201605 {
 					}
 				}
 				String plaintext = key + n;
-				md5.update(StandardCharsets.UTF_8.encode(plaintext));
+				md5.update(plaintext.getBytes());
 				String hashtext =  String.format("%032x", new BigInteger(1, md5.digest()));
 				if (hashtext.startsWith("00000")) {
 					synchronized (mutexHashes) {
