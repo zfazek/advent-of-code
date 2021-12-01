@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,7 +9,7 @@ import java.util.Set;
 public class Main202009 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("09.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/09/09.txt"));
 		List<Long> nums = new ArrayList<>();
 		for (int i = 0; i < lines.size(); i++) {
 			nums.add(Long.parseLong(lines.get(i)));

@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,15 +30,17 @@ class Tile {
 
 	public void rotate() {
 		int N = lines.length;
-		for (int x = 0; x < N / 2; x++) { 
-			for (int y = x; y < N - x - 1; y++) { 
-				char temp = lines[x].charAt(y); 
-				lines[x] = lines[x].substring(0, y) + lines[y].charAt(N - 1 - x) + lines[x].substring(y + 1); 
-				lines[y] = lines[y].substring(0, N - 1 - x) + lines[N - 1 - x].charAt(N - 1 - y) + lines[y].substring(N - x); 
-				lines[N - 1 - x] = lines[N - 1 - x].substring(0, N - 1 - y) + lines[N - 1 - y].charAt(x) + lines[N - 1 - x].substring(N - y); 
-				lines[N - 1 - y] = lines[N - 1 - y].substring(0, x) + temp + lines[N - 1 - y].substring(x + 1); 
-			} 
-		} 
+		for (int x = 0; x < N / 2; x++) {
+			for (int y = x; y < N - x - 1; y++) {
+				char temp = lines[x].charAt(y);
+				lines[x] = lines[x].substring(0, y) + lines[y].charAt(N - 1 - x) + lines[x].substring(y + 1);
+				lines[y] = lines[y].substring(0, N - 1 - x) + lines[N - 1 - x].charAt(N - 1 - y)
+						+ lines[y].substring(N - x);
+				lines[N - 1 - x] = lines[N - 1 - x].substring(0, N - 1 - y) + lines[N - 1 - y].charAt(x)
+						+ lines[N - 1 - x].substring(N - y);
+				lines[N - 1 - y] = lines[N - 1 - y].substring(0, x) + temp + lines[N - 1 - y].substring(x + 1);
+			}
+		}
 	}
 
 	public void flip() {
@@ -53,7 +53,7 @@ class Tile {
 }
 
 public class Main202020 {
-	final static String FILE_NAME = "20.txt";
+	final static String FILE_NAME = "2020/20/20.txt";
 	static Set<Integer> usedIndices = new HashSet<>();
 	static long count = 0;
 
@@ -83,7 +83,7 @@ public class Main202020 {
 			tiles[i] = tile;
 		}
 		int[] ids = new int[tilesStrArr.length];
-		int n = (int)Math.sqrt(tilesStrArr.length);
+		int n = (int) Math.sqrt(tilesStrArr.length);
 		iter(0, ids, tiles, n);
 
 	}
@@ -107,10 +107,8 @@ public class Main202020 {
 				if (idx == ids.length - 1) {
 					System.out.println("BINGO");
 					printIds(ids, tiles);
-					long m = Long.parseLong(tiles[ids[0]].id) *
-							Long.parseLong(tiles[ids[n - 1]].id) *
-							Long.parseLong(tiles[ids[n * n - n]].id) *
-							Long.parseLong(tiles[ids[n * n - 1]].id);
+					long m = Long.parseLong(tiles[ids[0]].id) * Long.parseLong(tiles[ids[n - 1]].id)
+							* Long.parseLong(tiles[ids[n * n - n]].id) * Long.parseLong(tiles[ids[n * n - 1]].id);
 					System.out.println(m);
 					System.exit(0);
 				}
@@ -139,7 +137,7 @@ public class Main202020 {
 	}
 
 	private static void printIds(int[] ids, Tile[] tiles) {
-		int n = (int)Math.sqrt(ids.length);
+		int n = (int) Math.sqrt(ids.length);
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				System.out.format("%4s ", tiles[ids[i * n + j]].id);

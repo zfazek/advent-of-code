@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -72,7 +70,7 @@ public class Main202008 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("08.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/08/08.txt"));
 		System.out.println(a(lines));
 		System.out.println(b(lines));
 	}

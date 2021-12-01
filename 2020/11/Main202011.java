@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,17 +13,16 @@ public class Main202011 {
 	static List<String> lines1 = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
-		lines = Files.readAllLines(Paths.get("11.txt"));
-//		print();
+		lines = Files.readAllLines(Paths.get("2020/11/11.txt"));
+		// print();
 		while (move(lines, lines1)) {
-//			print();
+			// print();
 		}
 		int n = getNumberOfOccupied();
 		System.out.println(n);
-		lines = Files.readAllLines(Paths.get("11.txt"));
-//		print();
+		// print();
 		while (move2(lines, lines1)) {
-//			print();
+			// print();
 		}
 		n = getNumberOfOccupied();
 		System.out.println(n);
@@ -65,7 +62,7 @@ public class Main202011 {
 				if (c == EMPTY) {
 					final int n = getNumberOfNeighbors(i, j);
 					if (n == 0) {
-						line += OCCUPIED; 
+						line += OCCUPIED;
 					} else {
 						line += EMPTY;
 					}
@@ -107,7 +104,7 @@ public class Main202011 {
 				if (c == EMPTY) {
 					final int n = getNumberOfNeighbors2(i, j);
 					if (n == 0) {
-						line += OCCUPIED; 
+						line += OCCUPIED;
 					} else {
 						line += EMPTY;
 					}
@@ -152,8 +149,10 @@ public class Main202011 {
 					k++;
 					posX = j + k * x;
 					posY = i + k * y;
-				} while (posX >= 0 && posX < columns && posY >= 0 && posY < rows && lines.get(posY).charAt(posX) == FLOOR);
-				if (posX >= 0 && posX < columns && posY >= 0 && posY < rows && lines.get(posY).charAt(posX) == OCCUPIED) {
+				} while (posX >= 0 && posX < columns && posY >= 0 && posY < rows
+						&& lines.get(posY).charAt(posX) == FLOOR);
+				if (posX >= 0 && posX < columns && posY >= 0 && posY < rows
+						&& lines.get(posY).charAt(posX) == OCCUPIED) {
 					acc++;
 				}
 			}
@@ -165,14 +164,22 @@ public class Main202011 {
 		final int columns = lines.get(0).length();
 		final int rows = lines.size();
 		int acc = 0;
-		if (i > 0 && j > 0 && lines.get(i - 1).charAt(j - 1) == OCCUPIED) acc++;
-		if (i > 0 && lines.get(i - 1).charAt(j) == OCCUPIED) acc++;
-		if (i > 0 && j < columns - 1 && lines.get(i - 1).charAt(j + 1) == OCCUPIED) acc++;
-		if (j > 0 && lines.get(i).charAt(j - 1) == OCCUPIED) acc++;
-		if (j < columns - 1 && lines.get(i).charAt(j + 1) == OCCUPIED) acc++;
-		if (i < rows - 1 && j > 0 && lines.get(i + 1).charAt(j - 1) == OCCUPIED) acc++;
-		if (i < rows - 1 && lines.get(i + 1).charAt(j) == OCCUPIED) acc++;
-		if (i < rows - 1 && j < columns - 1 && lines.get(i + 1).charAt(j + 1) == OCCUPIED) acc++;
+		if (i > 0 && j > 0 && lines.get(i - 1).charAt(j - 1) == OCCUPIED)
+			acc++;
+		if (i > 0 && lines.get(i - 1).charAt(j) == OCCUPIED)
+			acc++;
+		if (i > 0 && j < columns - 1 && lines.get(i - 1).charAt(j + 1) == OCCUPIED)
+			acc++;
+		if (j > 0 && lines.get(i).charAt(j - 1) == OCCUPIED)
+			acc++;
+		if (j < columns - 1 && lines.get(i).charAt(j + 1) == OCCUPIED)
+			acc++;
+		if (i < rows - 1 && j > 0 && lines.get(i + 1).charAt(j - 1) == OCCUPIED)
+			acc++;
+		if (i < rows - 1 && lines.get(i + 1).charAt(j) == OCCUPIED)
+			acc++;
+		if (i < rows - 1 && j < columns - 1 && lines.get(i + 1).charAt(j + 1) == OCCUPIED)
+			acc++;
 		return acc;
 	}
 

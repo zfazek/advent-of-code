@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,7 +9,7 @@ import java.util.Map;
 public class Main202013 {
 
 	private static void foo1() throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("13.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/13/13.txt"));
 		int origTime = Integer.parseInt(lines.get(0));
 		String[] arr = lines.get(1).split(",");
 		List<Integer> numbers = new ArrayList<Integer>();
@@ -36,7 +34,7 @@ public class Main202013 {
 	}
 
 	private static void foo2() throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("input.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/13/13.txt"));
 		String[] arr = lines.get(1).split(",");
 		Map<Integer, Integer> numbers = new HashMap<>();
 		for (int i = 0; i < arr.length; i++) {
@@ -57,7 +55,7 @@ public class Main202013 {
 		}
 		System.out.format("idxMax: %d, busMax: %d, nn: %d\n", idxMax, busMax, nn);
 		long n = 645338524723718L / busMax * busMax - idxMax;
-//		long n = nn + busMax - idxMax;
+		// long n = nn + busMax - idxMax;
 		while (true) {
 			boolean good = true;
 			for (int idx : numbers.keySet()) {
@@ -82,6 +80,5 @@ public class Main202013 {
 		foo1();
 		foo2();
 	}
-
 
 }

@@ -11,8 +11,8 @@ import java.util.TreeSet;
 public class Main201601 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2016/01.txt"));
-//		one(lines);
+		List<String> lines = Files.readAllLines(Paths.get("2016/01/01.txt"));
+		//		one(lines);
 		two(lines);
 	}
 

@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,21 +9,21 @@ import java.util.Map;
 public class Main202015 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("15a.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/15/15a.txt"));
 		final long start = System.currentTimeMillis();
 		String[] input = lines.get(0).split(",");
 		List<Integer> numbers = new ArrayList<>();
 		Map<Integer, Integer> dp = new HashMap<>();
 		for (String n : input) {
 			final int num = Integer.parseInt(n);
-//			System.out.println(num);
+			// System.out.println(num);
 			numbers.add(num);
 			dp.put(num, numbers.size() - 1);
 		}
 		dp.remove(numbers.get(numbers.size() - 1));
 		while (numbers.size() < 10) {
 			final int last = numbers.get(numbers.size() - 1);
-			System.out.format("idx: %d, last: %d\n",  numbers.size(), last);
+			System.out.format("idx: %d, last: %d\n", numbers.size(), last);
 			for (int n : numbers) {
 				System.out.format("%d ", n);
 			}
@@ -45,7 +43,8 @@ public class Main202015 {
 			System.out.println();
 		}
 		final long end = System.currentTimeMillis();
-		System.out.format("time elapsed in sec: %.3f. result: %d\n", (end - start) / 1000.0, numbers.get(numbers.size() - 1));
+		System.out.format("time elapsed in sec: %.3f. result: %d\n", (end - start) / 1000.0,
+				numbers.get(numbers.size() - 1));
 	}
 
 }

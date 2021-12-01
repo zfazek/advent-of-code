@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Main202018 {
-	final static String FILE_NAME = "18.txt";
+	final static String FILE_NAME = "2020/18/18.txt";
 
 	private static void foo1() throws IOException {
 		List<String> lines = Files.readAllLines(Paths.get(FILE_NAME));
@@ -23,7 +21,7 @@ public class Main202018 {
 	private static long getResult(String line, final int mode) {
 		long acc = 0;
 		while (true) {
-//			System.out.println(line);
+			// System.out.println(line);
 			final int p1 = line.lastIndexOf('(');
 			if (p1 == -1) {
 				if (mode == 1) {
@@ -50,14 +48,14 @@ public class Main202018 {
 		String[] tokens = line.split(" ");
 		long acc = Integer.parseInt(tokens[0]);
 		boolean sum = false;
-//		System.out.println(line);
+		// System.out.println(line);
 		for (int i = 1; i < tokens.length; i++) {
 			final String token = tokens[i];
-//			System.out.format("i: %d, token:%s:\n", i, token);
+			// System.out.format("i: %d, token:%s:\n", i, token);
 			if (token.equals("+")) {
 				sum = true;
 			} else if (token.equals("*")) {
-					sum = false;
+				sum = false;
 			} else {
 				int num = Integer.parseInt(token);
 				if (sum) {
@@ -68,11 +66,13 @@ public class Main202018 {
 			}
 		}
 		return acc;
-	}	private static void foo2() throws IOException {
+	}
+
+	private static void foo2() throws IOException {
 		List<String> lines = Files.readAllLines(Paths.get(FILE_NAME));
 		long acc = 0;
 		for (String line : lines) {
-//			System.out.println(line);
+			// System.out.println(line);
 			acc += getResult(line, 2);
 		}
 		System.out.println(acc);
@@ -80,13 +80,13 @@ public class Main202018 {
 
 	private static long getResultWithoutParentheses2(String line) {
 		List<String> tokens = new LinkedList<>(Arrays.asList(line.split(" ")));
-//		System.out.println(line);
+		// System.out.println(line);
 		for (int i = 1; i < tokens.size(); i++) {
 			final String token = tokens.get(i);
 			if (token.equals(" ")) {
 				continue;
 			}
-//			System.out.format("i: %d, token:%s:\n", i, token);
+			// System.out.format("i: %d, token:%s:\n", i, token);
 			if (token.equals("+")) {
 				final int num = Integer.parseInt(tokens.get(i - 1)) + Integer.parseInt(tokens.get(i + 1));
 				tokens.set(i - 1, " ");
@@ -104,7 +104,7 @@ public class Main202018 {
 		long acc = Integer.parseInt(tokens.get(0));
 		for (int i = 1; i < tokens.size(); i++) {
 			final String token = tokens.get(i);
-//			System.out.format("i: %d, token:%s:\n", i, token);
+			// System.out.format("i: %d, token:%s:\n", i, token);
 			if (token.equals("*")) {
 				continue;
 			}

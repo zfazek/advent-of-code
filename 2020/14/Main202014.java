@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,9 +8,8 @@ import java.util.Map;
 
 public class Main202014 {
 
-
 	private static void foo1() throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("14.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/14/14.txt"));
 		long maskAnd = 0;
 		long maskOr = 0;
 		Map<Integer, Long> numbers = new HashMap<>();
@@ -41,7 +38,7 @@ public class Main202014 {
 	}
 
 	private static void foo2() throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("14.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/14/14.txt"));
 		Map<Long, Integer> numbers = new HashMap<>();
 		String mask = "";
 		for (String line : lines) {
@@ -68,7 +65,7 @@ public class Main202014 {
 	private static List<Long> getAddrs(final String maskOrig, int addr) {
 		List<Long> addrs = new ArrayList<>();
 		final String addrStr = String.format("%36s", Integer.toBinaryString(addr)).replace(' ', '0');
-//		System.out.println(addrStr);
+		// System.out.println(addrStr);
 		int n = 0;
 		for (int i = 0; i < maskOrig.length(); i++) {
 			if (maskOrig.charAt(i) == 'X') {
@@ -85,7 +82,7 @@ public class Main202014 {
 				maskNew += "1";
 			}
 		}
-		for (int i = 0; i < (int)Math.pow(2, n); i++) {
+		for (int i = 0; i < (int) Math.pow(2, n); i++) {
 			final String num = String.format("%" + n + "s", Integer.toBinaryString(i)).replace(' ', '0');
 			String maskStr = maskNew;
 			int idx = 0;
@@ -94,9 +91,9 @@ public class Main202014 {
 				maskStr = maskStr.substring(0, idx) + num.charAt(j) + maskStr.substring(idx + 1);
 				idx++;
 			}
-//			System.out.println(maskNew);
+			// System.out.println(maskNew);
 			long mask = Long.parseLong(maskStr, 2);
-//			System.out.println(mask);
+			// System.out.println(mask);
 			addrs.add(mask);
 		}
 		return addrs;

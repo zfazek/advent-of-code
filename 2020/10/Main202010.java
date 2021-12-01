@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,7 +21,7 @@ public class Main202010 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("10.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/10/10.txt"));
 		List<Integer> nums = new ArrayList<>();
 		for (int i = 0; i < lines.size(); i++) {
 			nums.add(Integer.parseInt(lines.get(i)));

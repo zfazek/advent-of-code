@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public class Main201604 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2016/04.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2016/04/04.txt"));
 		one(lines);
 		two(lines);
 	}

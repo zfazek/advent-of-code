@@ -1,5 +1,3 @@
-package main;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,7 +6,7 @@ import java.util.List;
 public class Main202012 {
 
 	private static void fooA() throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("12.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/12/12.txt"));
 		int degree = 0;
 		int x = 0;
 		int y = 0;
@@ -56,8 +54,8 @@ public class Main202012 {
 				case 270:
 					y -= length;
 					break;
-					default:
-						System.out.println(line);
+				default:
+					System.out.println(line);
 				}
 			}
 			System.out.format("%3s x: %d, y: %d, degree: %d\n", line, x, y, degree);
@@ -66,7 +64,7 @@ public class Main202012 {
 	}
 
 	private static void fooB() throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("12.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2020/12/12.txt"));
 		int x = 0;
 		int y = 0;
 		int wx = 10;
@@ -122,9 +120,8 @@ public class Main202012 {
 	}
 
 	public static void main(String[] args) throws IOException {
-//		fooA();
+		fooA();
 		fooB();
 	}
-
 
 }
