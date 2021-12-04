@@ -10,43 +10,39 @@ import java.util.List;
 public class Main202104 {
 	static Table table;
 	static List<Table> tables = new ArrayList<>();
+	static List<Integer> results = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2021/04/04.txt"));
-		one(lines);
-	}
-
-	private static void one(List<String> lines) {
-		List<String> numbers = new ArrayList<>(Arrays.asList(lines.get(0).split(",")));
-		for (int i = 2; i < lines.size(); i++) {
-			int y = (i - 2) % 6;
-			if (y == 0) {
-				table = new Table();
+		String file = Files.readString(Paths.get("2021/04/04a.txt"));
+		List<String> boards = new ArrayList<>(Arrays.asList(file.split("\\r\\n\\r\\n")));
+		List<String> numbers = Arrays.asList(boards.get(0).split(","));
+		boards.remove(0);
+		for (String board : boards) {
+			String[] nums = board.trim().split("\\s+");
+			Table table = new Table();
+			for (int i = 0; i < nums.length; i++) {
+				table.m[i / Table.SIZE][i % Table.SIZE] = Integer.parseInt(nums[i]);
 			}
-			String[] tokens = lines.get(i).trim().split("\\s+");
-			if (tokens.length == 5) {
-				for (int x = 0; x < 5; x++) {
-					table.m[y][x] = Integer.parseInt(tokens[x]);
-				}
-			} else {
-				tables.add(table);
-			}
+			tables.add(table);
 		}
-		tables.add(table);
 
 		for (String number : numbers) {
 			int n = Integer.parseInt(number);
-			move(n);
+			draw(n);
+		}
+		if (!results.isEmpty()) {
+			System.out.println(results.get(0));
+			System.out.println(results.get(results.size() - 1));
 		}
 	}
 
-	private static void move(int n) {
+	private static void draw(int n) {
 		Iterator<Table> it = tables.iterator();
 		while (it.hasNext()) {
 			Table table = it.next();
-			table.move(n);
+			table.draw(n);
 			if (table.isWon()) {
-				System.out.println(n * table.getScore());
+				results.add(n * table.getScore());
 				it.remove();
 			}
 		}
@@ -54,12 +50,13 @@ public class Main202104 {
 }
 
 class Table {
+	static final int SIZE = 5;
 
-	int[][] m = new int[5][5];
+	int[][] m = new int[SIZE][SIZE];
 
-	void move(int n) {
-		for (int y = 0; y < 5; y++) {
-			for (int x = 0; x < 5; x++) {
+	void draw(int n) {
+		for (int y = 0; y < SIZE; y++) {
+			for (int x = 0; x < SIZE; x++) {
 				if (m[y][x] == n) {
 					m[y][x] = -1;
 				}
@@ -68,9 +65,9 @@ class Table {
 	}
 
 	boolean isWon() {
-		for (int y = 0; y < 5; y++) {
+		for (int y = 0; y < SIZE; y++) {
 			boolean allPicked = true;
-			for (int x = 0; x < 5; x++) {
+			for (int x = 0; x < SIZE; x++) {
 				if (m[y][x] != -1) {
 					allPicked = false;
 				}
@@ -79,9 +76,9 @@ class Table {
 				return true;
 			}
 		}
-		for (int y = 0; y < 5; y++) {
+		for (int y = 0; y < SIZE; y++) {
 			boolean allPicked = true;
-			for (int x = 0; x < 5; x++) {
+			for (int x = 0; x < SIZE; x++) {
 				if (m[x][y] != -1) {
 					allPicked = false;
 				}
@@ -95,8 +92,8 @@ class Table {
 
 	int getScore() {
 		int score = 0;
-		for (int y = 0; y < 5; y++) {
-			for (int x = 0; x < 5; x++) {
+		for (int y = 0; y < SIZE; y++) {
+			for (int x = 0; x < SIZE; x++) {
 				if (m[y][x] != -1) {
 					score += m[y][x];
 				}
@@ -108,11 +105,11 @@ class Table {
 	@Override
 	public String toString() {
 		String ret = "";
-		for (int y = 0; y < 5; y++) {
-			for (int x = 0; x < 5; x++) {
+		for (int y = 0; y < SIZE; y++) {
+			for (int x = 0; x < SIZE; x++) {
 				ret += String.format("%3d", m[y][x]);
 			}
-			ret += ",";
+			ret += "\n";
 		}
 		return ret;
 	}
