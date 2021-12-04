@@ -13,7 +13,7 @@ public class Main202104 {
 	static List<Integer> results = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
-		String file = Files.readString(Paths.get("2021/04/04a.txt"));
+		String file = Files.readString(Paths.get("2021/04/04.txt"));
 		List<String> boards = new ArrayList<>(Arrays.asList(file.split("\\r\\n\\r\\n")));
 		List<String> numbers = Arrays.asList(boards.get(0).split(","));
 		boards.remove(0);
