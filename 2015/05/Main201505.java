@@ -7,11 +7,11 @@ import java.util.List;
 public class Main201505 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2015/05.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2015/05/05.txt"));
 		long n1 = 0;
 		long n2 = 0;
 		for (String line : lines) {
-//			System.out.println(line);
+			//			System.out.println(line);
 			if (isNice1(line)) {
 				n1++;
 			}
@@ -24,7 +24,7 @@ public class Main201505 {
 	}
 
 	private static boolean isNice1(String line) {
-//		aeiou
+		//		aeiou
 		int numberOfVowels = 0;
 		for (int i = 0; i < line.length(); i++) {
 			char c = line.charAt(i);

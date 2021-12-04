@@ -69,7 +69,7 @@ public class Main201507 {
 			return r;
 		} else {
 			try {
-				int r =  Integer.parseInt(cmd);				
+				int r =  Integer.parseInt(cmd);
 				dp.put(wire, r);
 				return r;
 			} catch(NumberFormatException e) {
@@ -110,11 +110,11 @@ public class Main201507 {
 		long stopTime = System.currentTimeMillis();
 		{String key = "a"; System.out.format("%s: %s\n", key, foo(key));}
 		System.out.format("Elapsed time: %.2f sec\n", (stopTime - startTime) / 1000.0);
-		
+
 	}
-	
+
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2015/07.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2015/07/07.txt"));
 		one(lines);
 		two(lines);
 	}

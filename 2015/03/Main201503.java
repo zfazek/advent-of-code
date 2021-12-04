@@ -9,7 +9,7 @@ import java.util.Set;
 public class Main201503 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2015/03.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2015/03/03.txt"));
 		Set<House> houses = new HashSet<>();
 		for (String line : lines) {
 			houses.clear();
@@ -38,7 +38,7 @@ public class Main201503 {
 				}
 			}
 			System.out.println(houses.size());
-		}		
+		}
 		for (String line : lines) {
 			houses.clear();
 			int[] xs = new int[2];

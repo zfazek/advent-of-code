@@ -43,7 +43,7 @@ public class Main201508 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2015/08.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("2015/08/08.txt"));
 		one(lines);
 		two(lines);
 	}
