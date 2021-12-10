@@ -37,9 +37,12 @@ public class Main202110 {
 				}
 			}
 			if (incomplete) {
-				Object[] arr = stack.toArray();
-				for (int i = arr.length - 1; i >= 0; i--) {
-					int s = opens.indexOf((char)arr[i]) + 1;
+				List<Character> arr = new ArrayList<>();
+				while (!stack.empty()) {
+					arr.add(stack.pop());
+				}
+				for (char c : arr) {
+					int s = opens.indexOf(c) + 1;
 					s2 = s2 * 5 + s;
 				}
 				totalScores.add(s2);
