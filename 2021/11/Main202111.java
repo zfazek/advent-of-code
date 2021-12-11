@@ -75,7 +75,7 @@ public class Main202111 {
 	private static void increaseByOne(int[][] arr, int N) {
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-				arr[i][j] = (arr[i][j] + 1);
+				arr[i][j] = arr[i][j] + 1;
 			}
 		}
 	}
