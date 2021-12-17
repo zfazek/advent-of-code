@@ -84,30 +84,17 @@ public class Main202116 {
 		if (type == 0) {
 			return numbers.stream().mapToLong(Long::longValue).sum();
 		} else if (type == 1) {
-			long p = 1;
-			for (long n : numbers) {
-				p *= n;
-			}
-			return p;
+			return numbers.stream().mapToLong(Long::longValue).reduce(1L, (a, b) -> a * b);
 		} else if (type == 2) {
 			return numbers.stream().mapToLong(v -> v).min().orElseThrow(NoSuchElementException::new);
 		} else if (type == 3) {
 			return numbers.stream().mapToLong(v -> v).max().orElseThrow(NoSuchElementException::new);
 		} else if (type == 5) {
-			if (numbers.get(0) > numbers.get(1)) {
-				return 1;
-			}
-			return 0;
+			return numbers.get(0) > numbers.get(1) ? 1 : 0;
 		} else if (type == 6) {
-			if (numbers.get(0) < numbers.get(1)) {
-				return 1;
-			}
-			return 0;
+			return numbers.get(0) < numbers.get(1) ? 1 : 0;
 		} else if (type == 7) {
-			if (numbers.get(0) == numbers.get(1)) {
-				return 1;
-			}
-			return 0;
+			return numbers.get(0) == numbers.get(1) ? 1 : 0;
 		}
 		return 0;
 	}
