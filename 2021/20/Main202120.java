@@ -27,13 +27,8 @@ public class Main202120 {
 			char[][] arr1 = new char[size][size];
 			for (int i = 0; i < arr.length; i++) {
 				for (int j = 0; j < arr[0].length; j++) {
-					arr1[i][j] = arr[i][j];
-				}
-			}
-			for (int i = 0; i < arr.length; i++) {
-				for (int j = 0; j < arr[0].length; j++) {
-					String idxStr = "";
-					char c = '.';
+					StringBuilder idxStr = new StringBuilder();
+					char c;
 					for (int di = -1; di < 2; di++) {
 						for (int dj = -1; dj < 2; dj++) {
 							if (i + di < 0 || i + di >= arr.length || j + dj < 0 || j + dj >= arr[0].length) {
@@ -42,13 +37,13 @@ public class Main202120 {
 								c = arr[i + di][j + dj];
 							}
 							if (c == '.') {
-								idxStr += '0';
+								idxStr.append('0');
 							} else {
-								idxStr += '1';
+								idxStr.append('1');
 							}
 						}
 					}
-					int idx = Integer.parseInt(idxStr, 2);
+					int idx = Integer.parseInt(idxStr.toString(), 2);
 					arr1[i][j] = algorithm.charAt(idx);
 				}
 			}
