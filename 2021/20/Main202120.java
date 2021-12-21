@@ -10,21 +10,21 @@ public class Main202120 {
 		String algorithm = input.get(0);
 		int T = 50;
 		int border = 2 * T;
+		int arrIdx = 0;
 		int size = Math.max(input.size() - 2, input.get(2).length()) + 2 * border;
-		char[][] arr = new char[size][size];
+		char[][][] arr = new char[size][size][2];
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < arr[0].length; j++) {
-				arr[i][j] = '.';
+				arr[i][j][arrIdx] = '.';
 			}
 		}
 
 		for (int i = 2; i < input.size(); i++) {
 			for (int j = 0; j < input.get(i).length(); j++) {
-				arr[i - 2 + border][j + border] = input.get(i).charAt(j);
+				arr[i - 2 + border][j + border][arrIdx] = input.get(i).charAt(j);
 			}
 		}
 		for (int t = 0; t < T; t++) {
-			char[][] arr1 = new char[size][size];
 			for (int i = 0; i < arr.length; i++) {
 				for (int j = 0; j < arr[0].length; j++) {
 					StringBuilder idxStr = new StringBuilder();
@@ -32,9 +32,9 @@ public class Main202120 {
 					for (int di = -1; di < 2; di++) {
 						for (int dj = -1; dj < 2; dj++) {
 							if (i + di < 0 || i + di >= arr.length || j + dj < 0 || j + dj >= arr[0].length) {
-								c = arr[0][0];
+								c = arr[0][0][arrIdx];
 							} else {
-								c = arr[i + di][j + dj];
+								c = arr[i + di][j + dj][arrIdx];
 							}
 							if (c == '.') {
 								idxStr.append('0');
@@ -44,19 +44,15 @@ public class Main202120 {
 						}
 					}
 					int idx = Integer.parseInt(idxStr.toString(), 2);
-					arr1[i][j] = algorithm.charAt(idx);
+					arr[i][j][1 - arrIdx] = algorithm.charAt(idx);
 				}
 			}
-			for (int i = 0; i < arr.length; i++) {
-				for (int j = 0; j < arr[0].length; j++) {
-					arr[i][j] = arr1[i][j];
-				}
-			}
+			arrIdx = 1 - arrIdx;
 		}
 		long n = 0;
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < arr[0].length; j++) {
-				if (arr[i][j] == '#') {
+				if (arr[i][j][arrIdx] == '#') {
 					n++;
 				}
 			}
