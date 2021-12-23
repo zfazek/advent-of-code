@@ -18,27 +18,27 @@ int main() {
     ifstream file("20.txt");
     string input((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
     long start = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-    vector<string> lines = split_string(input, "\r\n");
+    vector<string> lines = split_string(input, "\n");
     string algorithm = lines.at(0);
     int T = 50;
     int border = 2 * T;
     int arrIdx = 0;
     int size = max(lines.size() - 2, lines.at(2).length()) + 2 * border;
     char arr[size][size][2];
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
             arr[i][j][arrIdx] = '.';
         }
     }
 
-    for (int i = 2; i < lines.size(); i++) {
-        for (int j = 0; j < lines.at(i).length(); j++) {
+    for (int i = 2; i < lines.size(); ++i) {
+        for (int j = 0; j < lines.at(i).length(); ++j) {
             arr[i - 2 + border][j + border][arrIdx] = lines.at(i).at(j);
         }
     }
-    for (int t = 0; t < T; t++) {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+    for (int t = 0; t < T; ++t) {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
                 stringstream ss;
                 char c;
                 for (int di = -1; di < 2; di++) {
@@ -62,10 +62,10 @@ int main() {
         arrIdx = 1 - arrIdx;
     }
     long n = 0;
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
             if (arr[i][j][arrIdx] == '#') {
-                n++;
+                ++n;
             }
         }
     }
