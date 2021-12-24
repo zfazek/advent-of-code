@@ -9,7 +9,7 @@ public class Main202120 {
 		long start = System.currentTimeMillis();
 		String algorithm = input.get(0);
 		int T = 50;
-		int border = 2 * T;
+		int border = T;
 		int arrIdx = 0;
 		int size = Math.max(input.size() - 2, input.get(2).length()) + 2 * border;
 		char[][][] arr = new char[size][size][2];
