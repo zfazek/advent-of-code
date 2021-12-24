@@ -21,7 +21,7 @@ int main() {
     vector<string> lines = split_string(input, "\n");
     string algorithm = lines.at(0);
     int T = 50;
-    int border = 2 * T;
+    int border = T;
     int arrIdx = 0;
     int size = max(lines.size() - 2, lines.at(2).length()) + 2 * border;
     char arr[size][size][2];
