@@ -14,7 +14,7 @@ void one(const int *numbers, const int n_lines) {
     printf("%d\n", n);
 }
 
-void two(int *numbers, const int n_lines) {
+void two(const int *numbers, const int n_lines) {
     kbtree_t(i32) * seen;
     elem_t *p, t;
     kbitr_t itr;
