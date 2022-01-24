@@ -1,7 +1,12 @@
 #include <stdlib.h>
+#include <string.h>
 
 int compare_int(const void *a, const void *b) {
     return *(int*)a - *(int*)b;
+}
+
+int compare_string(const void* a, const void* b) {
+    return strcmp((char*)a, (char*)b);
 }
 
 int binary_search(int arr[], int l, int r, int x) {
