@@ -16,13 +16,12 @@ BTree *btree_create_new_node_int(int v) {
     return node;
 }
 
-void btree_insert_int(BTree **HEAD, int v) {
-    BTree *head = *HEAD;
-    if (head == NULL) {
-        head = btree_create_new_node_int(v);
+void btree_insert_int(BTree **head, int v) {
+    if (*head == NULL) {
+        *head = btree_create_new_node_int(v);
         return;
     }
-    BTree *node = head;
+    BTree *node = *head;
     while (node) {
         if (v == node->v) {
             return;

@@ -1,10 +1,9 @@
-#include "../../lib/klib/kbtree.h"
+#include <string.h>
+
 #include "../../lib/utils_file.h"
+#include "../../lib/utils_hash.h"
 
 #define BUFFER_SIZE 10
-
-#define elem_cmp(a, b) (a - b)
-KBTREE_INIT(i32, int, elem_cmp)
 
 void one(int *numbers, int n_lines) {
     int n = 0;
@@ -12,20 +11,21 @@ void one(int *numbers, int n_lines) {
         n += numbers[i];
     }
     printf("%d\n", n);
+    fflush(stdout);
 }
 
 void two(int *numbers, int n_lines) {
-    kbtree_t(i32) *seen = kb_init(i32, KB_DEFAULT_SIZE);
     int n = 0;
+    Hash hash[HASH_SIZE];
+    memset(hash, 0, sizeof(Hash) * HASH_SIZE);
     while (1) {
         for (int i = 0; i < n_lines; ++i) {
-            int num = numbers[i];
-            n += num;
-            if (kb_getp(i32, seen, &n)) {
+            n += numbers[i];
+            if (hash_contains(hash, n)) {
                 printf("%d\n", n);
                 exit(0);
             } else {
-                kb_putp(i32, seen, &n);
+                hash_insert(hash, n);
             }
         }
     }
