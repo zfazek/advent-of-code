@@ -1,12 +1,12 @@
 #include "../../lib/klib/kbtree.h"
 #include "../../lib/utils_file.h"
 
-typedef int elem_t;
+#define BUFFER_SIZE 10
 
 #define elem_cmp(a, b) (a - b)
-KBTREE_INIT(i32, elem_t, elem_cmp)
+KBTREE_INIT(i32, int, elem_cmp)
 
-void one(const int *numbers, const int n_lines) {
+void one(int *numbers, int n_lines) {
     int n = 0;
     for (int i = 0; i < n_lines; ++i) {
         n += numbers[i];
@@ -14,25 +14,18 @@ void one(const int *numbers, const int n_lines) {
     printf("%d\n", n);
 }
 
-void two(const int *numbers, const int n_lines) {
-    kbtree_t(i32) * seen;
-    elem_t *p, t;
-    kbitr_t itr;
-    seen = kb_init(i32, KB_DEFAULT_SIZE);
-
+void two(int *numbers, int n_lines) {
+    kbtree_t(i32) *seen = kb_init(i32, KB_DEFAULT_SIZE);
     int n = 0;
-    int iter = 0;
     while (1) {
         for (int i = 0; i < n_lines; ++i) {
-            const int num = numbers[i];
+            int num = numbers[i];
             n += num;
-            t = n;
-            p = kb_getp(i32, seen, &t);
-            if (p) {
-                printf("%d\n", *p);
+            if (kb_getp(i32, seen, &n)) {
+                printf("%d\n", n);
                 exit(0);
             } else {
-                kb_putp(i32, seen, &t);
+                kb_putp(i32, seen, &n);
             }
         }
     }
@@ -48,10 +41,9 @@ int main() {
     fseek(f, 0, SEEK_SET);
     int numbers[n_lines];
     int idx = 0;
-    char buffer[10];
-    while (fgets(buffer, 10, f)) {
-        const int n = atoi(buffer);
-        numbers[idx++] = n;
+    char buffer[BUFFER_SIZE];
+    while (fgets(buffer, BUFFER_SIZE, f)) {
+        numbers[idx++] = atoi(buffer);
     }
     fclose(f);
     one(numbers, n_lines);

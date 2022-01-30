@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 
 int get_number_of_lines(FILE *f) {
