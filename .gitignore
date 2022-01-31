@@ -1,5 +1,7 @@
 a.out
 *.exe
+*.o
+.depend
 
 *.class
 
