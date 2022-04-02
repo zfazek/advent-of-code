@@ -21,11 +21,11 @@ void two(int *numbers, int n_lines) {
     while (1) {
         for (int i = 0; i < n_lines; ++i) {
             n += numbers[i];
-            if (hash_contains(hash, n)) {
+            if (hashmap_contains_int(hash, n)) {
                 printf("%d\n", n);
                 exit(0);
             } else {
-                hash_insert(hash, n);
+                hashmap_insert_int(hash, n, 0);
             }
         }
     }

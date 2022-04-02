@@ -14,13 +14,13 @@ int hash_code(int v) {
     return abs(v % HASH_SIZE);
 }
 
-void hash_insert(Hash *hash, int v) {
-    int hash_id = hash_code(v);
-    btree_insert_int(&hash[hash_id].node, v);
+void hashmap_insert_int(Hash *hash, int k, int v) {
+    int hash_id = hash_code(k);
+    btree_insert_int(&hash[hash_id].node, k, v);
 }
 
-int hash_contains(Hash *hash, int v) {
-    int hash_id = hash_code(v);
-    return btree_contains_int(hash[hash_id].node, v);
+BTree *hashmap_contains_int(Hash *hash, int k) {
+    int hash_id = hash_code(k);
+    return btree_contains_int(hash[hash_id].node, k);
 }
 

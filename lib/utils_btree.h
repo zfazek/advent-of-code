@@ -3,38 +3,40 @@
 #include <stdlib.h>
 
 typedef struct BTree {
+    int k;
     int v;
     struct BTree *left;
     struct BTree *right;
 } BTree;
 
-BTree *btree_create_new_node_int(int v) {
+BTree *btree_create_new_node_int(int k, int v) {
     BTree *node = (BTree *)malloc(sizeof(BTree));
+    node->k = k;
     node->v = v;
     node->left = NULL;
     node->right = NULL;
     return node;
 }
 
-void btree_insert_int(BTree **head, int v) {
+void btree_insert_int(BTree **head, int k, int v) {
     if (*head == NULL) {
-        *head = btree_create_new_node_int(v);
+        *head = btree_create_new_node_int(k, v);
         return;
     }
     BTree *node = *head;
     while (node) {
-        if (v == node->v) {
+        if (k == node->k) {
             return;
-        } else if (v < node->v) {
+        } else if (k < node->k) {
             if (node->right == NULL) {
-                node->right = btree_create_new_node_int(v);
+                node->right = btree_create_new_node_int(k, v);
                 return;
             } else {
                 node = node->right;
             }
         } else {
             if (node->left == NULL) {
-                node->left = btree_create_new_node_int(v);
+                node->left = btree_create_new_node_int(k, v);
                 return;
             } else {
                 node = node->left;
@@ -43,16 +45,16 @@ void btree_insert_int(BTree **head, int v) {
     }
 }
 
-int btree_contains_int(BTree *head, int v) {
+BTree *btree_contains_int(BTree *head, int k) {
     BTree *node = head;
     while (node) {
-        if (v == node->v) {
-            return 1;
-        } else if (v < node->v) {
+        if (k == node->k) {
+            return node;
+        } else if (k < node->k) {
             node = node->right;
         } else {
             node = node->left;
         }
     }
-    return 0;
+    return NULL;
 }
