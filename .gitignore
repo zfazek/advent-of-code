@@ -9,7 +9,7 @@ a.out
 Cargo.lock
 
 
-/.vscode/*
+**/.vscode/*
 /.idea/*
 *.iml
 
