@@ -14,7 +14,14 @@ var SIZE = 32000
 var MASK1 = 1
 var MASK2 = 2
 
-var hash = make(map[int]int)
+type V struct {
+	a int
+	b int
+	c int
+    arr []int
+}
+
+var hash = make(map[int]*V)
 
 func abs(x int) int {
 	if x < 0 {
@@ -26,13 +33,17 @@ func abs(x int) int {
 func fill(line string, x, y, mask int) {
 	var dx, dy int
 	idx := y*SIZE + x
-	_, exists := hash[idx]
+	v, exists := hash[idx]
 	if exists {
-		hash[idx] += mask
+		v.arr[0] += mask
 	} else {
-		hash[idx] = mask
+		v := V{}
+        v.arr = make([]int, 3)
+        v.arr[0] = mask
+		hash[idx] = &v
 	}
 	tokens := strings.Split(line, ",")
+    n := 1
 	for _, token := range tokens {
 		c := token[0]
 		d, _ := strconv.Atoi(token[1:])
@@ -51,33 +62,48 @@ func fill(line string, x, y, mask int) {
 		}
 		for i := 1; i <= d; i++ {
 			idx = (y+i*dy)*SIZE + x + i*dx
-			_, exists := hash[idx]
+			v, exists := hash[idx]
 			if exists {
-				if hash[idx]&mask == 0 {
-					hash[idx] += mask
+				if v.arr[0]&mask == 0 {
+					v.arr[0] += mask
+                    if v.arr[mask] == 0 {
+                        v.arr[mask] = n
+                    }
 				}
 			} else {
-				hash[idx] = mask
+                v := V{}
+                v.arr = make([]int, 3)
+                v.arr[0] = mask
+                v.arr[mask] = n
+				hash[idx] = &v
 			}
+            n += 1
 		}
 		x += dx * d
 		y += dy * d
 	}
 }
 
-func get_result() int {
-	min := math.MaxInt
+func get_result() (int, int) {
+	min_one := math.MaxInt
+	min_two := math.MaxInt
 	for i := range hash {
-		if hash[i] == MASK1+MASK2 {
+		if hash[i].arr[0] == MASK1+MASK2 {
 			y := i / SIZE
 			x := i % SIZE
-			m := abs(SIZE/2-y) + abs(SIZE/2-x)
-			if m > 0 && m < min {
-				min = m
+			m_one := abs(SIZE/2-y) + abs(SIZE/2-x)
+			if m_one > 0 && m_one < min_one {
+				min_one = m_one
 			}
+            if hash[i].arr[MASK1] > 0 && hash[i].arr[MASK2] > 0 {
+                m_two := hash[i].arr[MASK1] + hash[i].arr[MASK2]
+                if m_two < min_two {
+                    min_two = m_two
+                }
+            }
 		}
 	}
-	return min
+	return min_one, min_two
 }
 
 func main() {
