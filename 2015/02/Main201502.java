@@ -8,7 +8,7 @@ import java.util.List;
 public class Main201502 {
 
 	public static void main(String[] args) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get("2015/02/02.txt"));
+		List<String> lines = Files.readAllLines(Paths.get("02.txt"));
 		long result1 = 0;
 		long result2 = 0;
 		for (String line : lines) {
@@ -27,6 +27,7 @@ public class Main201502 {
 			int wh = w * h;
 			long r1 = 2 * lw + 2 * lh + 2 * wh;
 			//			System.out.println(r1);
+            r1 += nums[0] * nums[1];
 			result1 += r1;
 			long r2 = 2 * nums[0] + 2 * nums[1];
 			r2 += l * w * h;
