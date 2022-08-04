@@ -11,12 +11,16 @@ public class Main201504 {
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 		String key = "iwrupvqb";
 		long n = 0;
+		boolean flag = false;
 		while (true) {
 			String plaintext = key + n;
 			md5.update(StandardCharsets.UTF_8.encode(plaintext));
 			String hashtext =  String.format("%032x", new BigInteger(1, md5.digest()));
+			if (!flag && hashtext.startsWith("00000")) {
+				System.out.println(n);
+				flag = true;
+			}
 			if (hashtext.startsWith("000000")) {
-				System.out.println(hashtext);
 				System.out.println(n);
 				break;
 			}
