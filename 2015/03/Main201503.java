@@ -12,7 +12,6 @@ public class Main201503 {
 		List<String> lines = Files.readAllLines(Paths.get("2015/03/03.txt"));
 		Set<House> houses = new HashSet<>();
 		for (String line : lines) {
-			houses.clear();
 			int x = 0;
 			int y = 0;
 			houses.add(new House(x, y));
@@ -39,8 +38,8 @@ public class Main201503 {
 			}
 			System.out.println(houses.size());
 		}
+        houses.clear();
 		for (String line : lines) {
-			houses.clear();
 			int[] xs = new int[2];
 			int[] ys = new int[2];
 			houses.add(new House(xs[0], ys[0]));
