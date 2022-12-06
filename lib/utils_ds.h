@@ -5,6 +5,10 @@ int compare_int(const void *a, const void *b) {
     return *(int*)a - *(int*)b;
 }
 
+int compare_int_rev(const void *a, const void *b) {
+    return *(int*)b - *(int*)a;
+}
+
 int compare_string(const void* a, const void* b) {
     return strcmp((char*)a, (char*)b);
 }
