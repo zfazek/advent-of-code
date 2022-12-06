@@ -12,11 +12,11 @@ fn main() {
         let mut t2 = second.split("-");
         let b1 = t2.next().unwrap().parse::<i32>().unwrap();
         let b2 = t2.next().unwrap().parse::<i32>().unwrap();
-        if a1 <= b2 && a2 >= b1 || b1 <= a2 && b2 >= a1 {
-            sum2 += 1;
-        }
         if a1 <= b1 && a2 >= b2 || b1 <= a1 && b2 >= a2{
             sum1 += 1;
+        }
+        if a1 <= b2 && a2 >= b1 || b1 <= a2 && b2 >= a1 {
+            sum2 += 1;
         }
     }
     println!("{}", sum1);
