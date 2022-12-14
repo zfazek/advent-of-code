@@ -18,7 +18,6 @@
 	<classpathentry kind="src" path="2016/05"/>
 	<classpathentry kind="src" path="2016/06"/>
 	<classpathentry kind="src" path="2016/07"/>
-	<classpathentry kind="src" path="2019/10"/>
 	<classpathentry kind="src" path="2020/08"/>
 	<classpathentry kind="src" path="2020/09"/>
 	<classpathentry kind="src" path="2020/10"/>
@@ -51,5 +50,7 @@
 	<classpathentry kind="src" path="2021/24"/>
 	<classpathentry kind="src" path="2021/25"/>
 	<classpathentry kind="src" path="2022/11"/>
+	<classpathentry kind="src" path="2022/13"/>
+	<classpathentry kind="src" path="2022/14"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
