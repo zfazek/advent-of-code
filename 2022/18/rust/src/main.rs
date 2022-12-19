@@ -6,44 +6,28 @@ fn main() {
         let x = tokens.next().unwrap().parse::<i32>().unwrap();
         let y = tokens.next().unwrap().parse::<i32>().unwrap();
         let z = tokens.next().unwrap().parse::<i32>().unwrap();
-        let n = 100;
-        //println!("{} {} {}", x, y, z);
-        let k = ((x-1)*n+x, y, z);
-        if s.contains(&k) {
-            s.remove(&k);
-        } else {
-            s.insert(k);
+        s.insert((x, y, z));
+    }
+    let mut ans = 0;
+    for (x, y, z) in &s {
+        if !s.contains(&(*x + 1, *y, *z)) {
+            ans += 1;
         }
-        let k = (x*n+x+1, y, z);
-        if s.contains(&k) {
-            s.remove(&k);
-        } else {
-            s.insert(k);
+        if !s.contains(&(*x - 1, *y, *z)) {
+            ans += 1;
         }
-        let k = (x, (y-1)*n+y, z);
-        if s.contains(&k) {
-            s.remove(&k);
-        } else {
-            s.insert(k);
+        if !s.contains(&(*x, *y + 1, *z)) {
+            ans += 1;
         }
-        let k = (x, y*n+y+1, z);
-        if s.contains(&k) {
-            s.remove(&k);
-        } else {
-            s.insert(k);
+        if !s.contains(&(*x, *y - 1, *z)) {
+            ans += 1;
         }
-        let k = (x, y, (z-1)*n+z);
-        if s.contains(&k) {
-            s.remove(&k);
-        } else {
-            s.insert(k);
+        if !s.contains(&(*x, *y, *z + 1)) {
+            ans += 1;
         }
-        let k = (x, y, z*n+z+1);
-        if s.contains(&k) {
-            s.remove(&k);
-        } else {
-            s.insert(k);
+        if !s.contains(&(*x, *y, *z - 1)) {
+            ans += 1;
         }
     }
-    println!("{}", s.len());
+    println!("{}", ans);
 }
