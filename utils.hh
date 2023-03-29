@@ -12,7 +12,8 @@ std::vector<std::string> split_string(const std::string& str,
         strings.push_back(str.substr(prev, pos - prev));
         prev = pos + delimiter.size();
     }
-    strings.push_back(str.substr(prev));
-    if (strings[strings.size() - 1] == "") strings.pop_back();
+    if (!str.substr(prev).empty()) {
+        strings.push_back(str.substr(prev));
+    }
     return strings;
 }
