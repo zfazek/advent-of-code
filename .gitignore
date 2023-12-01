@@ -8,6 +8,7 @@ a.out
 **/target/*
 Cargo.lock
 
+main
 
 **/.vscode/*
 /.idea/*
