@@ -15,44 +15,22 @@ fn foo1(input: &str) -> usize {
     c
 }
 
-fn foo2(input: &str) -> usize {
+fn foo2(input: &str) -> u32 {
     let nums1 = vec!["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-    let nums2 = vec!["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    let mut c: usize = 0;
+    let mut c = 0;
     for line in input.lines() {
-        let mut num_min = 0;
-        let mut num_max = 0;
-        let mut min_idx = usize::MAX;
-        let mut max_idx = usize::MIN;
-        for (i, &v) in nums1.iter().enumerate() {
-            if let Some(idx) = line.find(v) {
-                if idx < min_idx {
-                    min_idx = idx;
-                    num_min = i + 1;
-                }
+        let mut ds = Vec::new();
+        for (i, v) in line.chars().enumerate() {
+            if v.is_digit(10) {
+                ds.push(v.to_digit(10).unwrap());
             }
-            if let Some(idx) = line.rfind(v) {
-                if idx >= max_idx {
-                    max_idx = idx;
-                    num_max = i + 1;
+            for (idx, &v) in nums1.iter().enumerate() {
+                if line[i..].starts_with(v) {
+                    ds.push((idx + 1) as u32);
                 }
             }
         }
-        for (i, &v) in nums2.iter().enumerate() {
-            if let Some(idx) = line.find(v) {
-                if idx < min_idx {
-                    min_idx = idx;
-                    num_min = i + 1;
-                }
-            }
-            if let Some(idx) = line.rfind(v) {
-                if idx >= max_idx {
-                    max_idx = idx;
-                    num_max = i + 1;
-                }
-            }
-        }
-        c += num_min * 10 + num_max;
+        c += ds[0] * 10 + ds[ds.len() - 1];
     }
     c
 }
