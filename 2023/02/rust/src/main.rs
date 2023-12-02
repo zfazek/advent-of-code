@@ -2,7 +2,7 @@ use std::cmp::max;
 use std::collections::HashMap;
 
 fn main() {
-    let input = include_str!("../../02.txt");
+    let input = include_str!("../../input.txt");
     println!("{}", foo1(&input));
     println!("{}", foo2(&input));
 }
