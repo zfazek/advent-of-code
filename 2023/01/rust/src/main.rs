@@ -9,14 +9,14 @@ fn foo1(input: &str) -> usize {
     for line in input.lines() {
         let num1 = line
             .chars()
-            .filter(|&x| x >= '0' && x <= '9')
+            .filter(|&x| x.is_digit(10))
             .next()
             .unwrap()
             .to_digit(10)
             .unwrap() as usize;
         let num2 = line
             .chars()
-            .filter(|&x| x >= '0' && x <= '9')
+            .filter(|&x| x.is_digit(10))
             .last()
             .unwrap()
             .to_digit(10)
@@ -34,8 +34,8 @@ fn foo2(input: &str) -> u32 {
     for line in input.lines() {
         let mut ds = Vec::new();
         for (i, v) in line.chars().enumerate() {
-            if v.is_digit(10) {
-                ds.push(v.to_digit(10).unwrap());
+            if let Some(d) = v.to_digit(10) {
+                ds.push(d);
             }
             for (idx, &v) in nums1.iter().enumerate() {
                 if line[i..].starts_with(v) {
