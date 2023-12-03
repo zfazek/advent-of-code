@@ -3,8 +3,8 @@ use std::collections::HashMap;
 
 fn main() {
     let input = include_str!("../../input.txt");
-    println!("{}", foo1(&input));
-    println!("{}", foo2(&input));
+    println!("{}", foo1(input));
+    println!("{}", foo2(input));
 }
 
 fn foo1(input: &str) -> usize {
@@ -23,9 +23,7 @@ fn foo1(input: &str) -> usize {
         for set in line.split(':').last().unwrap().split(';') {
             for color in set.split(',') {
                 let mut it = color.split(' ');
-                if it.nth(1).unwrap().parse::<usize>().unwrap()
-                    > *map.get(it.next().unwrap()).unwrap()
-                {
+                if it.nth(1).unwrap().parse::<usize>().unwrap() > *map.get(it.next().unwrap()).unwrap() {
                     continue 'line;
                 }
             }

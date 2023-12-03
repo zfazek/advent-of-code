@@ -1,22 +1,20 @@
 fn main() {
     let input = include_str!("../../input.txt");
-    println!("{}", foo1(&input));
-    println!("{}", foo2(&input));
+    println!("{}", foo1(input));
+    println!("{}", foo2(input));
 }
 
 fn foo1(input: &str) -> usize {
     let mut c: usize = 0;
     for line in input.lines() {
         let num1 = line
-            .chars()
-            .filter(|&x| x.is_digit(10))
-            .next()
+            .chars().find(|&x| x.is_ascii_digit())
             .unwrap()
             .to_digit(10)
             .unwrap() as usize;
         let num2 = line
             .chars()
-            .filter(|&x| x.is_digit(10))
+            .filter(|&x| x.is_ascii_digit())
             .last()
             .unwrap()
             .to_digit(10)
@@ -27,9 +25,7 @@ fn foo1(input: &str) -> usize {
 }
 
 fn foo2(input: &str) -> u32 {
-    let nums1 = vec![
-        "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-    ];
+    let nums1 = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
     let mut c = 0;
     for line in input.lines() {
         let mut ds = Vec::new();

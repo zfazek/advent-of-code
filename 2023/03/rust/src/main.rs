@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 fn main() {
     let input = include_str!("../../input.txt");
-    let ans = foo(&input);
+    let ans = foo(input);
     println!("{}", ans.0);
     println!("{}", ans.1);
 }
@@ -23,11 +23,11 @@ fn foo(input: &str) -> (usize, usize) {
         let mut x: usize = 0;
         let mut y: usize = 0;
         for j in 0..chars[0].len() {
-            if !chars[i][j].is_digit(10) {
+            if !chars[i][j].is_ascii_digit() {
                 if n > 0 {
                     if adjacent {
                         ans1 += n as usize;
-                        let _ = map.entry((x, y)).or_insert_with(Vec::new).push(n);
+                        map.entry((x, y)).or_default().push(n);
                         adjacent = false;
                     }
                     n = 0;
@@ -40,7 +40,7 @@ fn foo(input: &str) -> (usize, usize) {
                             if j + dj > 0 && i + di > 0 && i + di < chars.len() {
                                 let _y = i + di - 1;
                                 let _x = j + dj - 1;
-                                if !chars[_y][_x].is_digit(10) && chars[_y][_x] != '.' {
+                                if !chars[_y][_x].is_ascii_digit() && chars[_y][_x] != '.' {
                                     adjacent = true;
                                     y = _y;
                                     x = _x;
