@@ -1,7 +1,8 @@
+static INPUT: &str = include_str!("../../input.txt");
+
 fn main() {
-    let input = include_str!("../../input.txt");
-    println!("{}", foo1(input));
-    println!("{}", foo2(input));
+    println!("{}", foo1(INPUT));
+    println!("{}", foo2(INPUT));
 }
 
 fn foo1(input: &str) -> i64 {
@@ -26,8 +27,20 @@ fn foo1(input: &str) -> i64 {
 fn foo2(input: &str) -> i64 {
     let mut ans: i64 = 0;
     let lines = input.lines().collect::<Vec<_>>();
-    let time = lines[0].split(':').nth(1).unwrap().replace(' ', "").parse::<i64>().unwrap();
-    let distance = lines[1].split(':').nth(1).unwrap().replace(' ', "").parse::<i64>().unwrap();
+    let time = lines[0]
+        .split(':')
+        .nth(1)
+        .unwrap()
+        .replace(' ', "")
+        .parse::<i64>()
+        .unwrap();
+    let distance = lines[1]
+        .split(':')
+        .nth(1)
+        .unwrap()
+        .replace(' ', "")
+        .parse::<i64>()
+        .unwrap();
     for n in 1..time {
         if (time - n) * n > distance {
             ans += 1;
