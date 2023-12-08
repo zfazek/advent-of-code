@@ -12,18 +12,18 @@ fn foo1(input: &str) -> usize {
     let map = HashMap::from([("red", 12), ("green", 13), ("blue", 14)]);
     'line: for line in input.lines() {
         let idx = line
-            .split(':')
-            .next()
+            .split_once(": ")
             .unwrap()
-            .split(' ')
-            .last()
+            .0
+            .split_once(' ')
             .unwrap()
+            .1
             .parse::<i32>()
             .unwrap();
-        for set in line.split(':').last().unwrap().split(';') {
+        for set in line.split_once(": ").unwrap().1.split(';') {
             for color in set.split(',') {
-                let mut it = color.split(' ');
-                if it.nth(1).unwrap().parse::<usize>().unwrap() > *map.get(it.next().unwrap()).unwrap() {
+                let mut it = color.split_ascii_whitespace();
+                if it.next().unwrap().parse::<usize>().unwrap() > *map.get(it.next().unwrap()).unwrap() {
                     continue 'line;
                 }
             }
@@ -37,10 +37,10 @@ fn foo2(input: &str) -> usize {
     let mut c = 0;
     for line in input.lines() {
         let mut map = HashMap::from([("red", 0), ("green", 0), ("blue", 0)]);
-        for set in line.split(':').last().unwrap().split(';') {
-            for color in set.split(',') {
-                let mut it = color.split(' ');
-                let n = it.nth(1).unwrap().parse::<usize>().unwrap();
+        for set in line.split(": ").last().unwrap().split(';') {
+            for color in set.split(", ") {
+                let mut it = color.split_ascii_whitespace();
+                let n = it.next().unwrap().parse::<usize>().unwrap();
                 let c = it.next().unwrap();
                 map.insert(c, max(n, *map.get(&c).unwrap()));
             }
