@@ -41,31 +41,21 @@ fn main() {
     start_positions.clear();
     for i in 0..h {
         for j in 0..w {
-            if i > 0 && i < h - 1 && j > 0 && j < w - 1 {
-                continue;
-            }
-            if i == 0 && j == 0 {
-                continue;
-            }
-            if i == h - 1 && j == 0 {
-                continue;
-            }
-            if i == 0 && j == w - 1 {
-                continue;
-            }
-            if i == h - 1 && j == w - 1 {
+            if i > 0 && i < h - 1 && j > 0 && j < w - 1
+                || i == 0 && j == 0
+                || i == h - 1 && j == 0
+                || i == 0 && j == w - 1
+                || i == h - 1 && j == w - 1
+            {
                 continue;
             }
             if i == 0 {
                 start_positions.push(Point::new_with(j, i, 0, 1));
-            }
-            if i == h - 1 {
+            } else if i == h - 1 {
                 start_positions.push(Point::new_with(j, i, 0, -1));
-            }
-            if j == 0 {
+            } else if j == 0 {
                 start_positions.push(Point::new_with(j, i, 1, 0));
-            }
-            if j == w - 1 {
+            } else if j == w - 1 {
                 start_positions.push(Point::new_with(j, i, -1, 0));
             }
         }
@@ -128,18 +118,13 @@ fn foo(v: &Vec<Vec<char>>, start_positions: &Vec<Point>) {
             for beam in new_beams.iter() {
                 beams.push(beam.clone());
             }
-            for beam in beams.iter_mut() {
-                if beam.x < 0 || beam.x >= w || beam.y < 0 || beam.y >= h {
-                    beam.reset();
-                }
-            }
-            new_beams.clear();
-            for beam in beams {
-                if beam.dx != 0 || beam.dy != 0 {
-                    new_beams.push(beam);
-                }
-            }
-            beams = new_beams;
+            beams.retain(|beam| {
+                !(beam.dx == 0 && beam.dy == 0)
+                    && beam.x >= 0
+                    && beam.x < w
+                    && beam.y >= 0
+                    && beam.y < h
+            });
         }
         //_print(&vs);
         let res = cells.len();
