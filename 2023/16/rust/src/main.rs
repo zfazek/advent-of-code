@@ -30,14 +30,13 @@ fn main() {
     let input = include_str!("../../input.txt");
     let mut vs = Vec::new();
     for line in input.lines() {
-        let v = line.chars().collect::<Vec<_>>();
-        vs.push(v);
+        vs.push(line.chars().collect::<Vec<_>>());
     }
     let w = vs[0].len() as i32;
     let h = vs.len() as i32;
     let mut start_positions = Vec::new();
     start_positions.push(Point::new_with(0, 0, 1, 0));
-    foo(&vs.clone(), &start_positions);
+    foo(&vs, &start_positions);
     start_positions.clear();
     for i in 0..h {
         for j in 0..w {
@@ -60,7 +59,7 @@ fn main() {
             }
         }
     }
-    foo(&vs.clone(), &start_positions);
+    foo(&vs, &start_positions);
 }
 
 fn foo(v: &Vec<Vec<char>>, start_positions: &Vec<Point>) {
@@ -115,9 +114,7 @@ fn foo(v: &Vec<Vec<char>>, start_positions: &Vec<Point>) {
                     history.insert(beam.clone());
                 }
             }
-            for beam in new_beams.iter() {
-                beams.push(beam.clone());
-            }
+            beams.append(&mut new_beams);
             beams.retain(|beam| {
                 !(beam.dx == 0 && beam.dy == 0)
                     && beam.x >= 0
