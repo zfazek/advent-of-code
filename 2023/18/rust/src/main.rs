@@ -1,326 +1,134 @@
-use std::collections::{BTreeSet, HashMap};
-use std::io::Write;
+use std::collections::BTreeMap;
 
 fn main() {
     let input = include_str!("../../inputa.txt");
     foo1(input);
-    _foo2(input);
+    foo2(input);
 }
 
 fn foo1(input: &str) {
-    let mut ans1: i64 = 0;
-    let mut x: i64 = 0;
-    let mut y: i64 = 0;
+    let mut ps: BTreeMap<i32, Vec<(i32, i32, char)>> = BTreeMap::new();
+    let mut x: i32 = 0;
+    let mut y: i32 = 0;
     let mut prev_d = 'U';
-    let mut xs = BTreeSet::new();
-    let mut ys = BTreeSet::new();
     for line in input.lines() {
         let mut tokens = line.split_ascii_whitespace();
         let d = tokens.next().unwrap().chars().next().unwrap();
-        let n = tokens.next().unwrap().parse::<i64>().unwrap();
-        let mut dx: i64 = 0;
-        let mut dy: i64 = 0;
-        if d == 'R' {
-            dx = 1;
-            dy = 0;
-        } else if d == 'L' {
-            dx = -1;
-            dy = 0;
-        } else if d == 'D' {
-            dx = 0;
-            dy = 1;
-        } else if d == 'U' {
-            dx = 0;
-            dy = -1;
-        }
-        if prev_d == 'U' {
-            xs.insert(x);
-            ys.insert(y);
-        } else if prev_d == 'D' {
-            xs.insert(x);
-            ys.insert(y);
-        }
-        if prev_d == 'R' {
-            xs.insert(x);
-            ys.insert(y);
-        } else if prev_d == 'L' {
-            xs.insert(x);
-            ys.insert(y);
-        }
-        x += dx;
-        y += dy;
-        for _ in 0..n - 1 {
-            xs.insert(x);
-            ys.insert(y);
-            x += dx;
-            y += dy;
-        }
-        prev_d = d;
+        let n = tokens.next().unwrap().parse::<i32>().unwrap() - 1;
+        foo(&mut y, &mut x, d, &mut prev_d, n, &mut ps);
     }
-    println!("{} {}", ys.len(), xs.len());
-    for py in ys {
-        let mut ps = Vec::new();
-        let mut x: i64 = 0;
-        let mut y: i64 = 0;
-        let mut prev_d = 'U';
-        for line in input.lines() {
-            let mut tokens = line.split_ascii_whitespace();
-            let d = tokens.next().unwrap().chars().next().unwrap();
-            let n = tokens.next().unwrap().parse::<i64>().unwrap();
-            let mut dx: i64 = 0;
-            let mut dy: i64 = 0;
-            if d == 'R' {
-                dx = 1;
-                dy = 0;
-            } else if d == 'L' {
-                dx = -1;
-                dy = 0;
-            } else if d == 'D' {
-                dx = 0;
-                dy = 1;
-            } else if d == 'U' {
-                dx = 0;
-                dy = -1;
-            }
-            if py == y {
-                if prev_d == 'U' {
-                    if d == 'R' {
-                        ps.push((x, 'F'));
-                    } else {
-                        ps.push((x, '7'));
-                    }
-                } else if prev_d == 'D' {
-                    if d == 'R' {
-                        ps.push((x, 'L'));
-                    } else {
-                        ps.push((x, 'J'));
-                    }
-                }
-                if prev_d == 'R' {
-                    if d == 'U' {
-                        ps.push((x, 'J'));
-                    } else {
-                        ps.push((x, '7'));
-                    }
-                } else if prev_d == 'L' {
-                    if d == 'D' {
-                        ps.push((x, 'F'));
-                    } else {
-                        ps.push((x, 'L'));
-                    }
-                }
-            }
-            x += dx;
-            y += dy;
-            for _ in 0..n - 1 {
-                if py == y {
-                    if d == 'R' || d == 'L' {
-                        ps.push((x, '-'));
-                    } else {
-                        ps.push((x, '|'));
-                    }
-                }
-                x += dx;
-                y += dy;
-            }
-            prev_d = d;
-        }
-        ps.sort();
-        println!("{} {:?}", py, ps);
-        let mut count = 0;
-        let mut ans: i64 = 0;
-        for x in 0..ps.len() {
-            ans += 1;
-            let c = ps[x].1;
-            if vec!['|', 'L', 'J'].contains(&c) {
-                count += 1;
-            }
-            if count % 2 == 1 {
-                ans += ps[x + 1].0 - ps[x].0 - 1;
-            }
-        }
-        ans1 += ans;
-    }
-    println!();
-    println!();
-    println!();
-    println!("{}", ans1);
+    calc(ps);
 }
 
-fn _foo2(input: &str) {
-    let mut ans2: i64 = 0;
-    let mut x: i64 = 0;
-    let mut y: i64 = 0;
-    let mut xs = BTreeSet::new();
-    let mut ys = BTreeSet::new();
+fn foo2(input: &str) {
+    let mut ps: BTreeMap<i32, Vec<(i32, i32, char)>> = BTreeMap::new();
+    let mut x: i32 = 0;
+    let mut y: i32 = 0;
     let mut prev_d = 'U';
     for line in input.lines() {
         let token = line.split_once("(#").unwrap().1;
         let color = token[..5].to_string();
-        let mut d = token.split_once(")").unwrap().0.chars().last().unwrap();
-        let n = i64::from_str_radix(&color, 16).unwrap();
-        if d == '0' {
-            d = 'R';
-        } else if d == '1' {
-            d = 'D';
-        } else if d == '2' {
-            d = 'L';
-        } else if d == '3' {
-            d = 'U';
-        }
-        let mut dx: i64 = 0;
-        let mut dy: i64 = 0;
-        if d == 'R' {
-            dx = 1;
-            dy = 0;
-        } else if d == 'L' {
-            dx = -1;
-            dy = 0;
-        } else if d == 'D' {
-            dx = 0;
-            dy = 1;
-        } else if d == 'U' {
-            dx = 0;
-            dy = -1;
-        }
-        if prev_d == 'U' {
-            xs.insert(x);
-            ys.insert(y);
-        } else if prev_d == 'D' {
-            xs.insert(x);
-            ys.insert(y);
-        }
-        if prev_d == 'R' {
-            xs.insert(x);
-            ys.insert(y);
-        } else if prev_d == 'L' {
-            xs.insert(x);
-            ys.insert(y);
-        }
-        x += dx;
-        y += dy;
-        for _ in 0..n - 1 {
-            xs.insert(x);
-            ys.insert(y);
-            x += dx;
-            y += dy;
-        }
-        prev_d = d;
+        let dirs = ['R', 'D', 'L', 'U'];
+        let dd = token
+            .split_once(')')
+            .unwrap()
+            .0
+            .chars()
+            .last()
+            .unwrap()
+            .to_digit(10)
+            .unwrap() as usize;
+        let d = dirs[dd];
+        let n = i32::from_str_radix(&color, 16).unwrap() - 1;
+        foo(&mut y, &mut x, d, &mut prev_d, n, &mut ps);
     }
-    println!("{} {}", ys.len(), xs.len());
-    //println!("{:?}", ys);
-    let mut yy: i64 = 0;
-    let ys_len = ys.len();
-    for py in ys {
-        yy += 1;
-        if yy % 1000 == 0 {
-            print!("\r{:.1}% : {}", 100.0 * yy as f32 / ys_len as f32, ans2);
-            std::io::stdout().flush().unwrap();
-        }
-        let mut ps = Vec::new();
-        let mut x: i64 = 0;
-        let mut y: i64 = 0;
-        let mut prev_d = 'U';
-        for line in input.lines() {
-            let token = line.split_once("(#").unwrap().1;
-            let color = token[..5].to_string();
-            let mut d = token.split_once(")").unwrap().0.chars().last().unwrap();
-            let n = i64::from_str_radix(&color, 16).unwrap();
-            if d == '0' {
-                d = 'R';
-            } else if d == '1' {
-                d = 'D';
-            } else if d == '2' {
-                d = 'L';
-            } else if d == '3' {
-                d = 'U';
-            }
-            let mut dx: i64 = 0;
-            let mut dy: i64 = 0;
-            if d == 'R' {
-                dx = 1;
-                dy = 0;
-            } else if d == 'L' {
-                dx = -1;
-                dy = 0;
-            } else if d == 'D' {
-                dx = 0;
-                dy = 1;
-            } else if d == 'U' {
-                dx = 0;
-                dy = -1;
-            }
-            if py == y {
-                if prev_d == 'U' {
-                    if d == 'R' {
-                        ps.push((x, 'F'));
-                    } else {
-                        ps.push((x, '7'));
-                    }
-                } else if prev_d == 'D' {
-                    if d == 'R' {
-                        ps.push((x, 'L'));
-                    } else {
-                        ps.push((x, 'J'));
-                    }
-                }
-                if prev_d == 'R' {
-                    if d == 'U' {
-                        ps.push((x, 'J'));
-                    } else {
-                        ps.push((x, '7'));
-                    }
-                } else if prev_d == 'L' {
-                    if d == 'D' {
-                        ps.push((x, 'F'));
-                    } else {
-                        ps.push((x, 'L'));
-                    }
-                }
-            }
-            x += dx;
-            y += dy;
-            for _ in 0..n - 1 {
-                if py == y {
-                    if d == 'R' || d == 'L' {
-                        ps.push((x, '-'));
-                    } else {
-                        ps.push((x, '|'));
-                    }
-                }
-                x += dx;
-                y += dy;
-            }
-            prev_d = d;
-        }
-        ps.sort();
-        //println!("{} {:?}", py, ps);
-        let mut count = 0;
-        let mut ans: i64 = 0;
-        for x in 0..ps.len() {
-            ans += 1;
-            let c = ps[x].1;
-            if vec!['|', 'L', 'J'].contains(&c) {
-                count += 1;
-            }
-            if count % 2 == 1 {
-                ans += ps[x + 1].0 - ps[x].0 - 1;
-            }
-        }
-        ans2 += ans;
-    }
-    println!();
-    println!();
-    println!();
-    println!("{}", ans2);
+    calc(ps);
 }
 
-fn _print(vs: &Vec<Vec<char>>) {
-    for y in 0..vs.len() {
-        for x in 0..vs[y].len() {
-            print!("{}", vs[y][x]);
-        }
-        println!();
+fn foo(
+    y: &mut i32,
+    x: &mut i32,
+    d: char,
+    prev_d: &mut char,
+    n: i32,
+    ps: &mut BTreeMap<i32, Vec<(i32, i32, char)>>,
+) {
+    let mut dx: i32 = 0;
+    let mut dy: i32 = 0;
+    if d == 'R' {
+        dx = 1;
+        dy = 0;
+    } else if d == 'L' {
+        dx = -1;
+        dy = 0;
+    } else if d == 'D' {
+        dx = 0;
+        dy = 1;
+    } else if d == 'U' {
+        dx = 0;
+        dy = -1;
     }
-    println!();
+    if *prev_d == 'U' {
+        if d == 'R' {
+            ps.entry(*y).or_default().push((*x, 1, 'F'));
+        } else {
+            ps.entry(*y).or_default().push((*x, 1, '7'));
+        }
+    } else if *prev_d == 'D' {
+        if d == 'R' {
+            ps.entry(*y).or_default().push((*x, 1, 'L'));
+        } else {
+            ps.entry(*y).or_default().push((*x, 1, 'J'));
+        }
+    }
+    if *prev_d == 'R' {
+        if d == 'U' {
+            ps.entry(*y).or_default().push((*x, 1, 'J'));
+        } else {
+            ps.entry(*y).or_default().push((*x, 1, '7'));
+        }
+    } else if *prev_d == 'L' {
+        if d == 'D' {
+            ps.entry(*y).or_default().push((*x, 1, 'F'));
+        } else {
+            ps.entry(*y).or_default().push((*x, 1, 'L'));
+        }
+    }
+    *x += dx;
+    *y += dy;
+    if n > 0 {
+        if d == 'R' {
+            ps.entry(*y).or_default().push((*x, n, '-'));
+            *x += dx * n;
+        } else if d == 'L' {
+            *x += dx * n;
+            ps.entry(*y).or_default().push((*x + 1, n, '-'));
+        } else {
+            for _ in 0..n {
+                ps.entry(*y).or_default().push((*x, 1, '|'));
+                *y += dy;
+            }
+        }
+    }
+    *prev_d = d;
+}
+
+fn calc(mut ps: BTreeMap<i32, Vec<(i32, i32, char)>>) {
+    let mut ans: i64 = 0;
+    for row in ps.values_mut() {
+        row.sort();
+        let mut count = 0;
+        let mut sum = 0;
+        for i in 0..row.len() {
+            sum += row[i].1;
+            if ['|', 'L', 'J'].contains(&row[i].2) {
+                count += 1;
+            }
+            if count % 2 == 1 && row[i].2 != '-' {
+                sum += row[i + 1].0 - row[i].0 - 1;
+            }
+        }
+        ans += sum as i64;
+    }
+    println!("{}", ans);
 }
