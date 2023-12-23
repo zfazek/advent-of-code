@@ -60,8 +60,8 @@ impl Solution {
         let h = self.vs.len() as i32;
         let w = self.vs[0].len() as i32;
         for step in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
-            let mut xx = x + step.1;
-            let mut yy = y + step.0;
+            let xx = x + step.1;
+            let yy = y + step.0;
             if xx < 0 || xx >= w || yy < 0 || yy >= h {
                 continue;
             }
@@ -72,27 +72,12 @@ impl Solution {
             if self.visited.contains(&(yy, xx)) {
                 continue;
             }
-            if c == '.' {
+            if c == '>' && step.1 == -1 || c == 'v' && step.0 == -1 {
+                continue;
+            }
+            if c != '#' {
                 self.visited.insert((yy, xx));
                 self.foo1(xx, yy);
-                self.visited.remove(&(yy, xx));
-            } else if c == '>' {
-                if step.1 == 1 {
-                    self.visited.insert((yy, xx));
-                    xx += step.1;
-                    self.visited.insert((yy, xx));
-                    self.foo1(xx, yy);
-                    self.visited.remove(&(yy, xx));
-                    xx -= step.1;
-                    self.visited.remove(&(yy, xx));
-                }
-            } else if c == 'v' && step.0 == 1 {
-                self.visited.insert((yy, xx));
-                yy += step.0;
-                self.visited.insert((yy, xx));
-                self.foo1(xx, yy);
-                self.visited.remove(&(yy, xx));
-                yy -= step.0;
                 self.visited.remove(&(yy, xx));
             }
         }
