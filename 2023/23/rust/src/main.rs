@@ -49,46 +49,15 @@ impl Solution {
             max,
         }
     }
-    fn foo1(&mut self, x: i32, y: i32) {
-        if x == self.tx && y == self.ty {
-            if self.visited.len() > self.max {
-                self.max = self.visited.len();
-                self.path = self.visited.clone();
-            }
-            return;
-        }
-        let h = self.vs.len() as i32;
-        let w = self.vs[0].len() as i32;
-        for step in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
-            let xx = x + step.1;
-            let yy = y + step.0;
-            if xx < 0 || xx >= w || yy < 0 || yy >= h {
-                continue;
-            }
-            let c = self.vs[yy as usize][xx as usize];
-            if c == '#' {
-                continue;
-            }
-            if self.visited.contains(&(yy, xx)) {
-                continue;
-            }
-            if c == '>' && step.1 == -1 || c == 'v' && step.0 == -1 {
-                continue;
-            }
-            if c != '#' {
-                self.visited.insert((yy, xx));
-                self.foo1(xx, yy);
-                self.visited.remove(&(yy, xx));
-            }
-        }
-    }
-
-    fn foo2(&mut self, x: i32, y: i32) {
+    fn foo(&mut self, x: i32, y: i32, part1: bool) {
         if x == self.tx && y == self.ty {
             if self.visited.len() > self.max {
                 self.max = self.visited.len();
                 self.path = self.visited.clone();
                 println!("{}", self.max);
+                if self.max == 6422 {
+                    //std::process::exit(0);
+                }
             }
             return;
         }
@@ -104,14 +73,15 @@ impl Solution {
             if c == '#' {
                 continue;
             }
+            if part1 && (c == '>' && step.1 == -1 || c == 'v' && step.0 == -1) {
+                continue;
+            }
             if self.visited.contains(&(yy, xx)) {
                 continue;
             }
-            if c != '#' {
-                self.visited.insert((yy, xx));
-                self.foo2(xx, yy);
-                self.visited.remove(&(yy, xx));
-            }
+            self.visited.insert((yy, xx));
+            self.foo(xx, yy, part1);
+            self.visited.remove(&(yy, xx));
         }
     }
 
@@ -131,15 +101,11 @@ impl Solution {
 }
 
 fn main() {
-    let mut my = Solution::new();
-    my.foo1(my.sx, my.sy);
-    let ans = my.max;
-    // my._print();
-    println!("{ans}");
-    my.max = 0;
-    my.visited.clear();
-    my.foo2(my.sx, my.sy);
-    let ans = my.max;
-    // my._print();
-    println!("{ans}");
+    for part in [true, false] {
+        let mut my = Solution::new();
+        my.foo(my.sx, my.sy, part);
+        let ans = my.max;
+        // my._print();
+        println!("answer: {ans}");
+    }
 }
