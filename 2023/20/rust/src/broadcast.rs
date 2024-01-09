@@ -20,7 +20,6 @@ impl Moduler for Broadcast {
     }
 
     fn add(&mut self, _name: String) {
-        todo!()
     }
 
     fn get_type(&self) -> Type {

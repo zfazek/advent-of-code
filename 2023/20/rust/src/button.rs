@@ -19,7 +19,6 @@ impl Moduler for Button {
     }
 
     fn add(&mut self, _name: String) {
-        todo!()
     }
 
     fn get_type(&self) -> Type {

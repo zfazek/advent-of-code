@@ -113,8 +113,7 @@ fn main() {
                 .unwrap()
                 .process(pulse, &mut my);
 
-            while !my.queue.is_empty() {
-                let pulse = my.queue.pop_front().unwrap();
+            while let Some(pulse) = my.queue.pop_front() {
                 if pulse.level == Level::Low {
                     _n_low += 1;
                 } else {
