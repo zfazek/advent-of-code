@@ -3,8 +3,8 @@ fn main() {
     let mut result1:i64 = 0;
     let mut result2:i64 = 0;
     for line in lines.lines() {
-        let mut nums = vec![0; 3];
-        let mut tokens = line.split("x");
+        let mut nums = [0; 3];
+        let mut tokens = line.split('x');
         let l = str::parse::<i32>(tokens.next().unwrap()).unwrap();
         let w = str::parse::<i32>(tokens.next().unwrap()).unwrap();
         let h = str::parse::<i32>(tokens.next().unwrap()).unwrap();
