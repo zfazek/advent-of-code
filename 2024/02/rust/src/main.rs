@@ -10,7 +10,7 @@ fn first(input: &str) -> i32 {
     let mut result = 0;
     for line in input.lines() {
         let mut v = Vec::new();
-        let tokens = line.split_whitespace();
+        let tokens = line.split_ascii_whitespace();
         for n in tokens {
             let a = n.parse::<i32>().unwrap();
             v.push(a);
