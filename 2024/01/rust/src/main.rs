@@ -14,14 +14,11 @@ fn main() {
     }
     va.sort();
     vb.sort();
-    let mut result1 = 0;
-    let mut result2 = 0;
-    for (i, n) in va.iter().enumerate() {
-        result1 += (n - vb[i]).abs();
-        if mb.contains_key(n) {
-            result2 += n * mb.get(n).unwrap();
-        }
-    }
-    println!("{}", result1);
-    println!("{}", result2);
+    let result1: i64 = std::iter::zip(&va, vb).map(|(a, b)| (a - b).abs()).sum();
+    let result2: i64 = va
+        .iter()
+        .filter(|&x| mb.contains_key(x))
+        .map(|x| x * mb.get(x).unwrap())
+        .sum();
+    dbg!(result1, result2);
 }
