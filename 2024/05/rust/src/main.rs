@@ -5,22 +5,18 @@ fn main() {
     let mut result1: i64 = 0;
     let mut result2: i64 = 0;
     let (input_rules, update) = input.split_once("\n\n").unwrap();
-    let mut rules = Vec::new();
-    for rule in input_rules.lines() {
-        let (a, b) = rule.split_once('|').unwrap();
-        let a = a.parse::<i64>().unwrap();
-        let b = b.parse::<i64>().unwrap();
-        rules.push((a, b));
-    }
+    let rules: Vec<(i64, i64)> = input_rules
+        .lines()
+        .map(|line| line.split_once('|').unwrap())
+        .map(|p| (p.0.parse::<i64>().unwrap(), p.1.parse::<i64>().unwrap()))
+        .collect();
     for line in update.lines() {
-        let mut tokens = line
-            .split(',')
-            .map(|x| x.parse::<i64>().unwrap())
-            .collect::<Vec<_>>();
-        let mut m = HashMap::new();
-        for (i, &n) in tokens.iter().enumerate() {
-            m.insert(n, i);
-        }
+        let mut tokens: Vec<i64> = line.split(',').map(|x| x.parse::<i64>().unwrap()).collect();
+        let m: HashMap<i64, usize> = tokens
+            .iter()
+            .enumerate()
+            .map(|e| return (e.1.clone(), e.0))
+            .collect();
         let mut good = true;
         for &n in tokens.iter() {
             if !is_good(n, &m, &rules) {
@@ -29,8 +25,7 @@ fn main() {
             }
         }
         if good {
-            let v = tokens[tokens.len() / 2];
-            result1 += v;
+            result1 += tokens[tokens.len() / 2];
         } else {
             loop {
                 let mut good = true;
@@ -38,7 +33,7 @@ fn main() {
                     for j in i + 1..tokens.len() {
                         let a = tokens[i];
                         let b = tokens[j];
-                        for &rule in &rules {
+                        for rule in rules.iter() {
                             if a == rule.1 && b == rule.0 {
                                 let t = a;
                                 tokens[i] = b;
@@ -50,8 +45,7 @@ fn main() {
                     }
                 }
                 if good {
-                    let v = tokens[tokens.len() / 2];
-                    result2 += v;
+                    result2 += tokens[tokens.len() / 2];
                     break;
                 }
             }
@@ -62,15 +56,12 @@ fn main() {
 }
 
 fn is_good(n: i64, m: &HashMap<i64, usize>, rules: &Vec<(i64, i64)>) -> bool {
-    for j in 0..rules.len() {
-        if n == rules[j].0 {
-            if m.contains_key(&rules[j].1) && m.get(&rules[j].0) > m.get(&rules[j].1) {
+    for rule in rules {
+        if n == rule.0 {
+            if m.contains_key(&rule.1) && m.get(&rule.0) > m.get(&rule.1) {
                 return false;
             }
-        } else if n == rules[j].1
-            && m.contains_key(&rules[j].0)
-            && m.get(&rules[j].0) > m.get(&rules[j].1)
-        {
+        } else if n == rule.1 && m.contains_key(&rule.0) && m.get(&rule.0) > m.get(&rule.1) {
             return false;
         }
     }
