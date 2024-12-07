@@ -59,9 +59,7 @@ fn second(r: i64, ns: &mut VecDeque<i64>) -> i64 {
     let b = second(r, ns);
     ns[0] /= n0;
     let n1 = ns[0];
-    ns[0] = (n0.to_string() + &ns[0].to_string())
-        .parse::<i64>()
-        .unwrap();
+    ns[0] = format!("{}{}", n0, &ns[0]).parse::<i64>().unwrap();
     let c = second(r, ns);
     ns[0] = n1;
     ns.push_front(n0);
