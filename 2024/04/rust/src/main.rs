@@ -3,11 +3,10 @@ fn main() {
     let msg = ['X', 'M', 'A', 'S'];
     let mut result1 = 0;
     let mut result2 = 0;
-    let mut vv: Vec<Vec<char>> = Vec::new();
-    for line in input.lines() {
-        let v = line.chars().collect();
-        vv.push(v);
-    }
+    let vv = input
+        .lines()
+        .map(|line| line.chars().collect::<Vec<char>>())
+        .collect::<Vec<_>>();
     let len_i = vv.len() as i32;
     let len_j = vv[0].len() as i32;
     for i in 0..len_i {
