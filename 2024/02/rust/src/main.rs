@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 fn main() {
     let input = std::fs::read_to_string("../input.txt").unwrap();
     let result1 = first(&input);
@@ -46,7 +44,7 @@ fn second(input: &str) -> i32 {
 }
 
 fn is_safe(v: &Vec<i32>) -> bool {
-    let mut w = v.iter().tuple_windows();
-    let mut ww = w.clone();
-    w.all(|(&a, &b)| (1..=3).contains(&(a - b))) || ww.all(|(&a, &b)| (1..=3).contains(&(b - a)))
+    let vv = v.clone();
+    v.windows(2).all(|a| (1..=3).contains(&(a[0] - a[1])))
+        || vv.windows(2).all(|a| (1..=3).contains(&(a[1] - a[0])))
 }
