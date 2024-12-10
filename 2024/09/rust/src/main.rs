@@ -1,4 +1,4 @@
-#[derive(Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone)]
 struct File {
     idx: usize,
     len: usize,
@@ -6,7 +6,7 @@ struct File {
 }
 
 fn main() {
-    let input = include_str!("../../input.txt").chars().collect::<Vec<_>>();
+    let input = include_str!("../../inputa.txt").chars().collect::<Vec<_>>();
     let mut file = true;
     let mut num = 0;
     let mut idx = 0;
@@ -51,8 +51,8 @@ fn main() {
         vv[idx] = c;
     }
     let mut result1: usize = 0;
-    for i in 0..vv.len() {
-        result1 += i * vv[i] as usize;
+    for (i, &n) in vv.iter().enumerate() {
+        result1 += i * n as usize;
     }
     println!("{}", result1);
     let mut ridx = dp.len() - 1;
@@ -74,9 +74,9 @@ fn main() {
         dp[ridx].num = -1;
         if dp[idx].len != f.len {
             let i = dp[idx].idx;
-            dp.insert(idx, f.clone());
+            dp.insert(idx, f);
             dp[idx].idx = dp[idx + 1].idx;
-            dp[idx + 1].len = dp[idx + 1].len - dp[idx].len;
+            dp[idx + 1].len -= dp[idx].len;
             dp[idx + 1].idx = i + dp[idx].len;
             dp[idx].num = f.num;
         } else {
@@ -93,6 +93,7 @@ fn main() {
         }
     }
     println!("{}", result2);
+    _print(&dp);
 }
 
 fn find1(vv: &Vec<i32>, idx: usize) -> usize {
@@ -105,22 +106,22 @@ fn find1(vv: &Vec<i32>, idx: usize) -> usize {
 }
 
 fn find2(vv: &Vec<File>, file: &File, ridx: usize) -> usize {
-    for i in 0..vv.len() {
+    for (i, &n) in vv.iter().enumerate() {
         if i == ridx {
             break;
         }
-        if vv[i].num == -1 && vv[i].len >= file.len {
+        if n.num == -1 && n.len >= file.len {
             return i;
         }
     }
     0
 }
 
-fn _print(vv: &Vec<File>){
+fn _print(vv: &Vec<File>) {
     for f in vv.iter() {
         print!("({},{},{}) ", f.idx, f.len, f.num);
     }
-    println!("");
+    println!();
     for f in vv.iter() {
         for _ in 0..f.len {
             if f.num == -1 {
@@ -130,5 +131,5 @@ fn _print(vv: &Vec<File>){
             }
         }
     }
-    println!("");
+    println!();
 }
