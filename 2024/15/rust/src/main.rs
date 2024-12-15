@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::collections::BTreeSet;
 
 struct Dir {
     x: i32,
@@ -10,8 +11,15 @@ struct Robot {
     y: i32,
 }
 
+#[derive(Ord, PartialOrd, PartialEq, Eq)]
+struct Box {
+    x1: i32,
+    x2: i32,
+    y: i32,
+}
+
 fn main() {
-    let input = std::fs::read_to_string("../inputb.txt").unwrap();
+    let input = std::fs::read_to_string("../inputa.txt").unwrap();
     let mut dirs = BTreeMap::new();
     dirs.insert('<', Dir { x: -1, y: 0 });
     dirs.insert('>', Dir { x: 1, y: 0 });
@@ -58,13 +66,13 @@ fn mov1(vv: &mut Vec<Vec<char>>, m: char, dirs: &BTreeMap<char, Dir>, robot: &mu
     let x = robot.x as usize;
     let y = robot.y as usize;
     let c = vv[ny][nx];
-    if c == '.' {
+    if c == '#' {
+        return;
+    } else if c == '.' {
         vv[y][x] = '.';
         vv[ny][nx] = '@';
         robot.x = nx as i32;
         robot.y = ny as i32;
-        return;
-    } else if c == '#' {
         return;
     }
     let mut k = 2;
@@ -122,11 +130,15 @@ fn second(input: &str, dirs: &BTreeMap<char, Dir>) {
         vv.push(v);
     }
     let mut robot = Robot { x: 0, y: 0 };
+    let mut boxes = BTreeSet::new();
     for i in 0..vv.len() {
         for j in 0..vv[i].len() {
             if vv[i][j] == '@' {
                 robot.x = i as i32;
                 robot.y = j as i32;
+            } else if vv[i][j] == 'O' {
+                let b = Box {x1: i as i32, x2: (i + 1) as i32, y: j as i32};
+                boxes.insert(b);
             }
         }
     }
