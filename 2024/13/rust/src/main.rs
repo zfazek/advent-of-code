@@ -1,5 +1,3 @@
-use std::collections::BTreeSet;
-
 #[derive(Debug)]
 struct Button {
     x: i128,
@@ -20,7 +18,7 @@ const N: i128 = 10000000000000;
 // Button B: X+22, Y+67
 // Prize: X=8400, Y=5400
 fn main() {
-    let input = std::fs::read_to_string("../inputm.txt").unwrap();
+    let input = std::fs::read_to_string("../input.txt").unwrap();
     let machines = input.split("\n\n");
     let mut result1: i128 = 0;
     for machine in machines {
@@ -88,56 +86,26 @@ fn main() {
             }
         }
         dbg!(&button_a, &button_b, &prize);
+        print!("{} {}", prize.x, prize.y);
         let nom_b = prize.y * button_a.x - prize.x * button_a.y;
         let denom_b = button_b.y * button_a.x - button_a.y * button_b.x;
-        //dbg!(nom_b, denom_b, nom_b % denom_b);
+        dbg!(nom_b, denom_b, nom_b % denom_b);
         if nom_b % denom_b == 0 {
+            println!(" OK");
             let b = nom_b / denom_b;
             let a = (prize.x - button_b.x * b) / button_a.x;
             //dbg!(&button_a, &button_b, &prize);
-            dbg!(a, b);
-            result1 += button_a.cost * a + button_b.cost * b;
+            let rx = a * button_a.x + b * button_b.x;
+            let ry = a * button_a.y + b * button_b.y;
+            println!("{a}, {b}: {rx} {ry}");
+            if rx == prize.x || ry == prize.y {
+                result1 += button_a.cost * a + button_b.cost * b;
+            }
+        } else {
+            println!(" NOT OK");
+            //dbg!(nom_b, denom_b, nom_b % denom_b);
+            //dbg!(&button_a, &button_b, &prize);
         }
-        /*
-        let mut sol: BTreeSet<(i128, i128)> = BTreeSet::new();
-        let mut visited: BTreeSet<(i128, i128)> = BTreeSet::new();
-        _iter(&button_a, &button_b, &prize, 0, 0, &mut sol, &mut visited);
-        if sol.len() > 1 {
-            println!("{:?}", &sol);
-        }
-        if let Some(min) = sol
-            .iter()
-            .map(|x| button_a.cost * x.0 + button_b.cost * x.1)
-            .min()
-        {
-            result1 += min;
-        }
-        */
     }
     println!("{:?}", result1);
-}
-
-fn _iter(
-    ba: &Button,
-    bb: &Button,
-    p: &Prize,
-    a: i128,
-    b: i128,
-    sol: &mut BTreeSet<(i128, i128)>,
-    visited: &mut BTreeSet<(i128, i128)>,
-) {
-    //println!("{} {}", a, b);
-    if visited.contains(&(a, b)) {
-        return;
-    }
-    if a * ba.x + b * bb.x > p.x || a * ba.y + b * bb.y > p.y {
-        return;
-    }
-    visited.insert((a, b));
-    if a * ba.x + b * bb.x == p.x && a * ba.y + b * bb.y == p.y {
-        sol.insert((a, b));
-        return;
-    }
-    _iter(ba, bb, p, a + 1, b, sol, visited);
-    _iter(ba, bb, p, a, b + 1, sol, visited);
 }
