@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::collections::BTreeSet;
 use std::collections::BinaryHeap;
 
 const W: i32 = 71;
@@ -6,32 +7,28 @@ const N: usize = 1024;
 
 fn main() {
     let input = include_str!("../../input.txt");
-    let mut vv = Vec::new();
-    for _ in 0..W {
-        vv.push(vec!['.'; W as usize]);
-    }
-    first(input, &vv);
-    second(input, &vv);
+    first(input);
+    second(input);
 }
 
-fn first(input: &str, vv: &Vec<Vec<char>>) {
-    let mut vv = vv.to_owned();
+fn first(input: &str) {
+    let mut positions = BTreeSet::new();
     let mut n = 0;
+    let tx = W - 1;
+    let ty = W - 1;
+    let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     for line in input.lines() {
         n += 1;
         let (x, y) = line.split_once(",").unwrap();
         let x: usize = x.parse().unwrap();
         let y: usize = y.parse().unwrap();
-        vv[y][x] = '#';
+        positions.insert((x, y));
         if n >= N {
             break;
         }
     }
-    let tx = W - 1;
-    let ty = W - 1;
-    let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     let mut visited = BTreeMap::new();
-    _print(&vv, W, &visited);
+    _print(&positions, W, &visited);
     let mut heap = BinaryHeap::new();
     heap.push((0, 0, 0));
     while let Some(p) = heap.pop() {
@@ -45,7 +42,7 @@ fn first(input: &str, vv: &Vec<Vec<char>>) {
             if !(0..W).contains(&x) || !(0..W).contains(&y) {
                 continue;
             }
-            if vv[y as usize][x as usize] == '#' {
+            if positions.contains(&(x as usize, y as usize)) {
                 continue;
             }
             heap.push((p.0 - 1, x, y));
@@ -54,16 +51,16 @@ fn first(input: &str, vv: &Vec<Vec<char>>) {
     println!("{}", -visited.get(&(tx, ty)).unwrap());
 }
 
-fn second(input: &str, vv: &Vec<Vec<char>>) {
-    let mut vv = vv.to_owned();
+fn second(input: &str) {
+    let mut positions = BTreeSet::new();
+    let tx = W - 1;
+    let ty = W - 1;
+    let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     for line in input.lines() {
         let (x, y) = line.split_once(",").unwrap();
         let x: usize = x.parse().unwrap();
         let y: usize = y.parse().unwrap();
-        vv[y][x] = '#';
-        let tx = W - 1;
-        let ty = W - 1;
-        let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
+        positions.insert((x, y));
         let mut visited = BTreeMap::new();
         let mut heap = BinaryHeap::new();
         heap.push((0, 0, 0));
@@ -78,7 +75,7 @@ fn second(input: &str, vv: &Vec<Vec<char>>) {
                 if !(0..W).contains(&x) || !(0..W).contains(&y) {
                     continue;
                 }
-                if vv[y as usize][x as usize] == '#' {
+                if positions.contains(&(x as usize, y as usize)) {
                     continue;
                 }
                 heap.push((p.0 - 1, x, y));
@@ -91,14 +88,16 @@ fn second(input: &str, vv: &Vec<Vec<char>>) {
     }
 }
 
-fn _print(vv: &Vec<Vec<char>>, n: i32, visited: &BTreeMap<(i32, i32), i32>) {
+fn _print(positions: &BTreeSet<(usize, usize)>, n: i32, visited: &BTreeMap<(i32, i32), i32>) {
     let n = n as usize;
     for i in 0..n {
         for j in 0..n {
             if visited.contains_key(&(j as i32, i as i32)) {
                 print!("O");
+            } else if positions.contains(&(j, i)) {
+                print!("#");
             } else {
-                print!("{}", vv[i][j]);
+                print!(".");
             }
         }
         println!();
