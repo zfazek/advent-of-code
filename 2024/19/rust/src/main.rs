@@ -1,48 +1,46 @@
 use std::collections::BTreeSet;
+use std::collections::BinaryHeap;
 
 fn main() {
-    let input = include_str!("../../inputa.txt");
+    let input = include_str!("../../input.txt");
     let (towels_tokens, designs_tokens) = input.split_once("\n\n").unwrap();
     let towel_patterns: Vec<&str> = towels_tokens.split(", ").collect();
     let mut result1: usize = 0;
     let len = designs_tokens.lines().count();
     let vv: Vec<&str> = designs_tokens.lines().collect();
-    vv.iter().enumerate().for_each(|(n, &line)| {
+    'foo: for (n, &line) in vv.iter().enumerate() {
         let mut patterns_set = BTreeSet::new();
         for &p in towel_patterns.iter() {
             if line.contains(p) {
                 patterns_set.insert(p);
             }
         }
-        let max_len = patterns_set.iter().map(|x| x.len()).max().unwrap();
-        let res = foo(line, 0, &patterns_set, max_len);
-        if res {
-            result1 += 1;
+        let mut heap = BinaryHeap::new();
+        let mut visited = BTreeSet::new();
+        heap.push((0, "".to_owned()));
+        while let Some(p) = heap.pop() {
+            if visited.contains(&p.1) {
+                continue;
+            }
+            visited.insert(p.1.to_owned());
+            for &pattern in patterns_set.iter() {
+                let word = p.1.to_owned() + pattern;
+                //println!("{} {}", line, word);
+                if word == line {
+                    result1 += 1;
+                    println!("{}/{}: {}", n + 1, len, result1);
+                    continue 'foo;
+                }
+                if word.len() >= line.len() {
+                    continue;
+                }
+                if !line.contains(&word) {
+                    continue;
+                }
+                heap.push((word.len(), word));
+            }
         }
         println!("{}/{}: {}", n + 1, len, result1);
-    });
-    println!("{}", result1);
-}
-
-fn foo(design: &str, i: usize, towel_patterns: &BTreeSet<&str>, max_len: usize) -> bool {
-    let len = design.len();
-    for j in 1..len {
-        if i + j > len {
-            return false;
-        }
-        if j > max_len {
-            return false;
-        }
-        let p = &design[i..i + j];
-        if towel_patterns.contains(p) {
-            if i + j == design.len() {
-                return true;
-            }
-            let res = foo(design, i + j, towel_patterns, max_len);
-            if res {
-                return true;
-            }
-        }
     }
-    false
+    println!("{}", result1);
 }
