@@ -19,9 +19,6 @@ fn main() {
         let mut visited = BTreeSet::new();
         heap.push((0, "".to_owned()));
         while let Some(p) = heap.pop() {
-            if visited.contains(&p.1) {
-                continue;
-            }
             visited.insert(p.1.to_owned());
             for &pattern in patterns_set.iter() {
                 let word = p.1.to_owned() + pattern;
@@ -30,6 +27,9 @@ fn main() {
                     result1 += 1;
                     println!("{}/{}: {}", n + 1, len, result1);
                     continue 'foo;
+                }
+                if visited.contains(&word) {
+                    continue;
                 }
                 if word.len() >= line.len() {
                     continue;
