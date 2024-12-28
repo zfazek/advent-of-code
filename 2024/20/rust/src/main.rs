@@ -23,36 +23,15 @@ fn main() {
             }
         }
     }
-    let vv_orig = vv.clone();
-    let n_moves = foo(&vv, sx, sy, ex, ey);
-    let mut cheats: BTreeMap<(usize, usize), i32> = BTreeMap::new();
-    for i in 1..vv.len() - 1 {
-        for j in 1..vv[i].len() - 1 {
-            vv = vv_orig.clone();
-            let c = vv[i][j];
-            if c == '#' {
-                vv[i][j] = '.';
-                let n = foo(&vv, sx, sy, ex, ey);
-                if n < n_moves {
-                    cheats.insert((j, i), n_moves - n);
-                }
-            }
-        }
-    }
-    println!("{}", cheats.values().filter(|&x| *x >= 100).count());
-}
-
-fn foo(vv: &Vec<Vec<char>>, sx: i32, sy: i32, ex: i32, ey: i32) -> i32 {
+    let mut path = Vec::new();
+    path.push((sx, sy));
     let mut heap = BinaryHeap::new();
     let mut visited = BTreeSet::new();
-    heap.push((0, sx, sy));
+    heap.push((path.clone(), sx, sy));
     let dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)];
     while let Some(p) = heap.pop() {
-        if visited.contains(&(p.1, p.2)) {
-            continue;
-        }
         if p.1 == ex && p.2 == ey {
-            return -p.0;
+            break;
         }
         visited.insert((p.1, p.2));
         for &d in dirs.iter() {
@@ -61,8 +40,32 @@ fn foo(vv: &Vec<Vec<char>>, sx: i32, sy: i32, ex: i32, ey: i32) -> i32 {
             if vv[y as usize][x as usize] == '#' {
                 continue;
             }
-            heap.push((p.0 - 1, x, y));
+            if visited.contains(&(x, y)) {
+                continue;
+            }
+            let new_path = path.clone();
+            path.push((x, y));
+            heap.push((new_path, x, y));
         }
     }
-    0
+    //println!("{path:?}");
+    let mut cheats2: BTreeMap<i32, usize> = BTreeMap::new();
+    let mut cheats20: BTreeMap<i32, usize> = BTreeMap::new();
+    for i in 0..path.len() {
+        for j in i + 1..path.len() {
+            let p1 = path[i];
+            let p2 = path[j];
+            let d1 = (p1.0 - p2.0).abs() + (p1.1 - p2.1).abs();
+            let d2: i32 = j as i32 - i as i32;
+            if d1 <= 2 && d2 - d1 >= 100 {
+                *cheats2.entry(d2 - d1).or_default() += 1;
+            }
+            if d1 <= 20 && d2 - d1 >= 100 {
+                *cheats20.entry(d2 - d1).or_default() += 1;
+            }
+        }
+    }
+    //dbg!(&cheats);
+    println!("{}", cheats2.values().sum::<usize>());
+    println!("{}", cheats20.values().sum::<usize>());
 }
