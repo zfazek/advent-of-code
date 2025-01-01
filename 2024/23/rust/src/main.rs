@@ -38,11 +38,42 @@ fn main() {
         .filter(|x| x[0].starts_with('t') || x[1].starts_with('t') || x[2].starts_with('t'))
         .count();
     println!("{result1}");
-    let mut computers = Vec::new();
-    for s in dp.keys() {
-        computers.push(s.to_owned());
+    let mut solutions = BTreeSet::new();
+    let mut len = 0;
+    for (_, v) in dp.iter() {
+        for i in (2..v.len()).rev() {
+            let mut found = false;
+            let combinations = v.iter().combinations(i);
+            for it in combinations {
+                let mut it_set = BTreeSet::new();
+                for &itt in it.iter() {
+                    it_set.insert(itt.to_owned());
+                }
+                let mut good = true;
+                for &j in it.iter() {
+                    let vv = dp.get(j).unwrap();
+                    if !vv.is_superset(&it_set) {
+                        good = false;
+                        break;
+                    }
+                }
+                if good {
+                    found = true;
+                    if it.len() > len {
+                        solutions.insert(it.clone());
+                        len = it.len();
+                    }
+                    break;
+                }
+            }
+            if found {
+                break;
+            }
+        }
     }
-    let lans = dp.values().collect::<BTreeSet<_>>();
-    //dbg!(&ss);
-    let it = computers.iter().combinations(4);
+    let mut a = solutions.iter().map(|x| (x.len(), x)).collect::<Vec<_>>();
+    a.reverse();
+    let b = a[0].1.iter().join(",");
+    print!("{:?}", b);
+    dbg!(a);
 }
