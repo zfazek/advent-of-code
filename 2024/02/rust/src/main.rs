@@ -6,45 +6,41 @@ fn main() {
     println!("{result2}");
 }
 
-fn first(input: &str) -> i32 {
-    let mut result = 0;
-    for line in input.lines() {
-        let tokens = line.split_ascii_whitespace();
-        let v = tokens
-            .map(|x| x.parse::<i32>().unwrap())
-            .collect::<Vec<_>>();
-        if is_safe(&v) {
-            result += 1;
-        }
-    }
-    result
+fn first(input: &str) -> usize {
+    input
+        .lines()
+        .map(|line| {
+            line.split_ascii_whitespace()
+                .map(|x| x.parse::<i32>().unwrap())
+                .collect::<Vec<_>>()
+        })
+        .filter(|v| is_safe(&v))
+        .count()
 }
 
-fn second(input: &str) -> i32 {
-    let mut result = 0;
-    for line in input.lines() {
-        let tokens = line.split_whitespace();
-        let v = tokens
-            .map(|x| x.parse::<i32>().unwrap())
-            .collect::<Vec<_>>();
-        if is_safe(&v) {
-            result += 1;
-            continue;
-        }
-        for i in 0..v.len() {
-            let mut vv = v.clone();
-            vv.remove(i);
-            if is_safe(&vv) {
-                result += 1;
-                break;
-            }
-        }
-    }
-    result
+fn second(input: &str) -> usize {
+    input
+        .lines()
+        .map(|line| {
+            line.split_ascii_whitespace()
+                .map(|x| x.parse::<i32>().unwrap())
+                .collect::<Vec<_>>()
+        })
+        .filter(|v| is_safe(&v) || is_safe2(&v))
+        .count()
 }
 
 fn is_safe(v: &Vec<i32>) -> bool {
-    let vv = v.clone();
     v.windows(2).all(|a| (1..=3).contains(&(a[0] - a[1])))
-        || vv.windows(2).all(|a| (1..=3).contains(&(a[1] - a[0])))
+        || v.windows(2).all(|a| (1..=3).contains(&(a[1] - a[0])))
+}
+
+fn is_safe2(v: &Vec<i32>) -> bool {
+    (0..v.len())
+        .map(|i| {
+            let mut vv = v.clone();
+            vv.remove(i);
+            vv
+        })
+        .any(|v| is_safe(&v))
 }
