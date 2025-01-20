@@ -22,7 +22,7 @@ fn one() {
         i += 1;
         loop {
             if !grid.contains(&(x + dirs[d_idx].0, y + dirs[d_idx].1)) {
-                let next_d_idx =(d_idx + 1) % dirs.len(); 
+                let next_d_idx = (d_idx + 1) % dirs.len();
                 let next_x = x + dirs[next_d_idx].0;
                 let next_y = y + dirs[next_d_idx].1;
                 if grid.contains(&(next_x, next_y)) {
@@ -35,7 +35,13 @@ fn one() {
             d_idx = (d_idx + 1) % dirs.len();
         }
     }
-    println!("i: {}, ({}, {}), manhattan: {}", i, x, y, i32::abs(x) + i32::abs(y));
+    println!(
+        "i: {}, ({}, {}), manhattan: {}",
+        i,
+        x,
+        y,
+        i32::abs(x) + i32::abs(y)
+    );
 }
 
 fn two() {
@@ -56,7 +62,7 @@ fn two() {
         i += 1;
         loop {
             if let None = grid.get(&(x + dirs[d_idx].0, y + dirs[d_idx].1)) {
-                let next_d_idx =(d_idx + 1) % dirs.len(); 
+                let next_d_idx = (d_idx + 1) % dirs.len();
                 let next_x = x + dirs[next_d_idx].0;
                 let next_y = y + dirs[next_d_idx].1;
                 if let Some(_) = grid.get(&(next_x, next_y)) {
@@ -70,22 +76,29 @@ fn two() {
             d_idx = (d_idx + 1) % dirs.len();
         }
     }
-    println!("i: {}, ({}, {}), value: {}", i, x, y, grid.get(&(x, y)).unwrap());
+    println!(
+        "i: {}, ({}, {}), value: {}",
+        i,
+        x,
+        y,
+        grid.get(&(x, y)).unwrap()
+    );
 }
 
 fn get_neighbors(grid: &std::collections::HashMap<(i32, i32), i32>, x: i32, y: i32) -> i32 {
-    let mut sum = 0;
-    for i in -1..2 {
-        for j in -1..2 {
-            if i == 0 && j == 0 {
-                continue;
-            }
-            let x = x + i;
-            let y = y + j;
-            if let Some(value) = grid.get(&(x, y)) {
-                sum += value;
-            }
-        }
-    }
-    sum
+    (-1..2)
+        .map(|i| {
+            (-1..2)
+                .filter(|j| !(i == 0 && *j == 0))
+                .map(|j| {
+                    let x = x + i;
+                    let y = y + j;
+                    match grid.get(&(x, y)) {
+                        Some(n) => *n,
+                        _ => 0,
+                    }
+                })
+                .sum::<i32>()
+        })
+        .sum::<i32>()
 }
