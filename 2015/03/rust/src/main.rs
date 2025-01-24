@@ -33,7 +33,7 @@ fn one(input: &String) {
     for line in input.lines() {
         let mut x = 0;
         let mut y = 0;
-        houses.insert(House{x, y});
+        houses.insert(House { x, y });
         for c in line.chars() {
             if c == '^' {
                 y += 1;
@@ -44,7 +44,7 @@ fn one(input: &String) {
             } else if c == '>' {
                 x += 1;
             }
-            houses.insert(House{x, y});
+            houses.insert(House { x, y });
         }
     }
     println!("{}", houses.len());
@@ -55,7 +55,7 @@ fn two(input: &String) {
     for line in input.lines() {
         let mut xs = vec![0; 2];
         let mut ys = vec![0; 2];
-        houses.insert(House{x: xs[0], y: ys[0]});
+        houses.insert(House { x: xs[0], y: ys[0] });
         for (i, c) in line.chars().enumerate() {
             if c == '^' {
                 ys[i % 2] += 1;
@@ -66,7 +66,10 @@ fn two(input: &String) {
             } else if c == '>' {
                 xs[i % 2] += 1;
             }
-            houses.insert(House{x: xs[i % 2], y: ys[i % 2]});
+            houses.insert(House {
+                x: xs[i % 2],
+                y: ys[i % 2],
+            });
         }
     }
     println!("{}", houses.len());
