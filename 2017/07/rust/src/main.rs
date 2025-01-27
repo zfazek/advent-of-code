@@ -52,7 +52,13 @@ fn two(discs: &HashMap<String, Disc>) {
         if sub_disc_weights.len() != 1 {
             for sub_disc in &disc.sub_discs {
                 let weight = foo(discs, &sub_disc);
-                println!("{}: {}, root disc: {} ({})", disc_name, weight, &sub_disc, discs.get(sub_disc).unwrap().weight);
+                println!(
+                    "{}: {}, root disc: {} ({})",
+                    disc_name,
+                    weight,
+                    &sub_disc,
+                    discs.get(sub_disc).unwrap().weight
+                );
             }
         }
         if sub_disc_weights.len() > 1 {
@@ -62,10 +68,12 @@ fn two(discs: &HashMap<String, Disc>) {
 }
 
 fn foo(discs: &HashMap<String, Disc>, d: &String) -> i32 {
-    let disc = discs.get(d).unwrap();
-    let mut sum = disc.weight;
-    for i in &disc.sub_discs {
-        sum += foo(discs, i);
-    }
-    sum
+    discs.get(d).unwrap().weight
+        + discs
+            .get(d)
+            .unwrap()
+            .sub_discs
+            .iter()
+            .map(|i| foo(discs, i))
+            .sum::<i32>()
 }
