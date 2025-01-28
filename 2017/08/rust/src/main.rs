@@ -83,14 +83,12 @@ fn main() {
             registers.insert(register, new_value);
         }
     }
-    let mut max = 0;
-    for (register, value) in registers {
-        if let Err(_) = str::parse::<i32>(register) {
-            if value > max {
-                max = value;
-            }
-        }
-    }
+    let max = *registers
+        .iter()
+        .filter(|(&register, _)| str::parse::<i32>(register).is_err())
+        .map(|x| x.1)
+        .max()
+        .unwrap();
     println!("{}", max);
     println!("{}", highest);
 }
