@@ -57,11 +57,10 @@ fn main() {
 
 fn is_good(n: i64, m: &HashMap<i64, usize>, rules: &Vec<(i64, i64)>) -> bool {
     for rule in rules {
-        if n == rule.0 {
-            if m.contains_key(&rule.1) && m.get(&rule.0) > m.get(&rule.1) {
-                return false;
-            }
-        } else if n == rule.1 && m.contains_key(&rule.0) && m.get(&rule.0) > m.get(&rule.1) {
+        if n == rule.0 && m.contains_key(&rule.1) && m.get(&rule.0) > m.get(&rule.1) {
+            return false;
+        }
+        if n == rule.1 && m.contains_key(&rule.0) && m.get(&rule.0) > m.get(&rule.1) {
             return false;
         }
     }
