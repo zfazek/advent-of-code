@@ -76,7 +76,7 @@ fn foo(sm: &Vec<Vec<char>>, si: usize, sj: usize, part: Part) -> Option<usize> {
 }
 
 fn count(m: &Vec<Vec<char>>, c: char) -> usize {
-    m.iter().flatten().filter(|&&x| x == c).count()
+    m.iter().flatten().filter(|&x| *x == c).count()
 }
 
 fn turn(d: (i32, i32)) -> (i32, i32) {
