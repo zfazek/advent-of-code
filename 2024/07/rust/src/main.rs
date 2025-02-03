@@ -2,20 +2,24 @@ use std::collections::VecDeque;
 
 fn main() {
     let input = std::fs::read_to_string("../input.txt").unwrap();
-    let mut result1 = 0;
-    let mut result2 = 0;
-    for line in input.lines() {
-        let (value, nums) = line.split_once(": ").unwrap();
-        let value = value.parse::<i64>().unwrap();
-        let mut nums = nums
-            .split_ascii_whitespace()
-            .map(|x| x.parse::<i64>().unwrap())
-            .collect::<VecDeque<_>>();
-        result1 += first(value, &mut nums).signum() * value;
-        result2 += second(value, &mut nums).signum() * value;
-    }
-    println!("{result1}");
-    println!("{result2}");
+    let results = input
+        .lines()
+        .map(|line| {
+            let (value, nums) = line.split_once(": ").unwrap();
+            let value = value.parse::<i64>().unwrap();
+            let mut nums = nums
+                .split_ascii_whitespace()
+                .map(|x| x.parse::<i64>().unwrap())
+                .collect::<VecDeque<_>>();
+            (
+                first(value, &mut nums).signum() * value,
+                second(value, &mut nums).signum() * value,
+            )
+        })
+        .reduce(|acc, e| (acc.0 + e.0, acc.1 + e.1))
+        .unwrap();
+    println!("{}", results.0);
+    println!("{}", results.1);
 }
 
 fn first(r: i64, ns: &mut VecDeque<i64>) -> i64 {
