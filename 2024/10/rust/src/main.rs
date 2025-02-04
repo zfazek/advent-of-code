@@ -2,16 +2,16 @@ use std::collections::BTreeSet;
 
 fn main() {
     let input = std::fs::read_to_string("../input.txt").unwrap();
-    let mut vv = Vec::new();
     let mut result1 = BTreeSet::new();
     let mut result2 = BTreeSet::new();
-    for line in input.lines() {
-        let mut v = Vec::new();
-        for c in line.chars() {
-            v.push(c.to_digit(10).unwrap() as i32);
-        }
-        vv.push(v);
-    }
+    let vv = input
+        .lines()
+        .map(|line| {
+            line.chars()
+                .map(|c| c.to_digit(10).unwrap() as i32)
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
     let size = vv.len() as i32;
     for i in 0..size {
         for j in 0..size {
