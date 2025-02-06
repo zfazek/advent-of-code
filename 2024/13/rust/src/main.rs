@@ -85,24 +85,24 @@ fn main() {
                 };
             }
         }
-        dbg!(&button_a, &button_b, &prize);
-        print!("{} {}", prize.x, prize.y);
+        //dbg!(&button_a, &button_b, &prize);
+        //print!("{} {}", prize.x, prize.y);
         let nom_b = prize.y * button_a.x - prize.x * button_a.y;
         let denom_b = button_b.y * button_a.x - button_a.y * button_b.x;
-        dbg!(nom_b, denom_b, nom_b % denom_b);
+        //dbg!(nom_b, denom_b, nom_b % denom_b);
         if nom_b % denom_b == 0 {
-            println!(" OK");
+            //println!(" OK");
             let b = nom_b / denom_b;
             let a = (prize.x - button_b.x * b) / button_a.x;
             //dbg!(&button_a, &button_b, &prize);
             let rx = a * button_a.x + b * button_b.x;
             let ry = a * button_a.y + b * button_b.y;
-            println!("{a}, {b}: {rx} {ry}");
+            //println!("{a}, {b}: {rx} {ry}");
             if rx == prize.x || ry == prize.y {
                 result1 += button_a.cost * a + button_b.cost * b;
             }
         } else {
-            println!(" NOT OK");
+            //println!(" NOT OK");
             //dbg!(nom_b, denom_b, nom_b % denom_b);
             //dbg!(&button_a, &button_b, &prize);
         }
