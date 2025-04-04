@@ -86,6 +86,6 @@ func one(lines []string) {
 func main() {
 	fileContent, _ := ioutil.ReadFile("20.txt")
 	text := string(fileContent)
-	lines := strings.Split(text, "\r\n")
+	lines := strings.Split(text, "\n")
 	one(lines)
 }
