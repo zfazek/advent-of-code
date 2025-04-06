@@ -1,8 +1,12 @@
 use std::{fs, usize};
 
 fn main() {
-    let input: Vec<String> = fs::read_to_string("../20.txt").unwrap().lines().map(str::to_string).collect();
-    let algorithm = &input[0].as_bytes();
+    let input: Vec<String> = fs::read_to_string("../20.txt")
+        .unwrap()
+        .lines()
+        .map(str::to_string)
+        .collect();
+    let algorithm = input[0].as_bytes();
     let start = std::time::SystemTime::now();
     const T: usize = 50;
     let border = T;
