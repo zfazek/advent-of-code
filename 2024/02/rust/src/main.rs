@@ -14,7 +14,7 @@ fn first(input: &str) -> usize {
                 .map(|x| x.parse::<i32>().unwrap())
                 .collect::<Vec<_>>()
         })
-        .filter(|v| is_safe(&v))
+        .filter(is_safe)
         .count()
 }
 
@@ -26,7 +26,7 @@ fn second(input: &str) -> usize {
                 .map(|x| x.parse::<i32>().unwrap())
                 .collect::<Vec<_>>()
         })
-        .filter(|v| is_safe(&v) || is_safe2(&v))
+        .filter(|v| is_safe(v) || is_safe2(v))
         .count()
 }
 
