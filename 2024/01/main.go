@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"slices"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	fileContent, _ := ioutil.ReadFile("input.txt")
+	fileContent, _ := os.ReadFile("input.txt")
 	text := string(fileContent)
 	lines := strings.Split(text, "\n")
 	var va []int
