@@ -1,0 +1,17 @@
+a.out
+*.exe
+*.o
+.depend
+
+*.class
+
+**/target/*
+Cargo.lock
+
+main
+
+**/.vscode/*
+/.idea/*
+*.iml
+
+/bin/*
