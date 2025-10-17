@@ -1,78 +1,50 @@
 fn main() {
     let input = std::fs::read_to_string("../input.txt").unwrap();
-    let msg = ['X', 'M', 'A', 'S'];
-    let mut result1 = 0;
-    let mut result2 = 0;
-    let vv = input
-        .lines()
-        .map(|line| line.chars().collect::<Vec<char>>())
-        .collect::<Vec<_>>();
-    let len_i = vv.len() as i32;
-    let len_j = vv[0].len() as i32;
-    for i in 0..len_i {
-        for j in 0..len_j {
-            for di in [-1, 0, 1] {
-                for dj in [-1, 0, 1] {
-                    if di == 0 && dj == 0 {
-                        if vv[i as usize][j as usize] != 'A' {
-                            continue;
-                        }
-                        if i < 1 || i >= len_i - 1 || j < 1 || j >= len_j - 1 {
-                            continue;
-                        }
-                        if vv[(i - 1) as usize][(j - 1) as usize] == 'M'
-                            && vv[(i + 1) as usize][(j + 1) as usize] == 'S'
-                            && vv[(i - 1) as usize][(j + 1) as usize] == 'M'
-                            && vv[(i + 1) as usize][(j - 1) as usize] == 'S'
-                        {
-                            result2 += 1;
-                            continue;
-                        }
-                        if vv[(i - 1) as usize][(j - 1) as usize] == 'M'
-                            && vv[(i + 1) as usize][(j + 1) as usize] == 'S'
-                            && vv[(i - 1) as usize][(j + 1) as usize] == 'S'
-                            && vv[(i + 1) as usize][(j - 1) as usize] == 'M'
-                        {
-                            result2 += 1;
-                            continue;
-                        }
-                        if vv[(i - 1) as usize][(j - 1) as usize] == 'S'
-                            && vv[(i + 1) as usize][(j + 1) as usize] == 'M'
-                            && vv[(i - 1) as usize][(j + 1) as usize] == 'M'
-                            && vv[(i + 1) as usize][(j - 1) as usize] == 'S'
-                        {
-                            result2 += 1;
-                            continue;
-                        }
-                        if vv[(i - 1) as usize][(j - 1) as usize] == 'S'
-                            && vv[(i + 1) as usize][(j + 1) as usize] == 'M'
-                            && vv[(i - 1) as usize][(j + 1) as usize] == 'S'
-                            && vv[(i + 1) as usize][(j - 1) as usize] == 'M'
-                        {
-                            result2 += 1;
-                            continue;
-                        }
-                    }
-                    let mut good = true;
-                    for n in 0..msg.len() as i32 {
-                        let pos_i = i + di * n;
-                        let pos_j = j + dj * n;
-                        if pos_i < 0 || pos_i >= len_i || pos_j < 0 || pos_j >= len_j {
-                            good = false;
-                            break;
-                        }
-                        if vv[pos_i as usize][pos_j as usize] != msg[n as usize] {
-                            good = false;
-                            break;
-                        }
-                    }
-                    if good {
-                        result1 += 1;
-                    }
+    let grid: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
+    let (rows, cols) = (grid.len(), grid[0].len());
+    let (mut result1, mut result2) = (0, 0);
+    for i in 0..rows {
+        for j in 0..cols {
+            // Part 1: Find XMAS in all 8 directions
+            for (di, dj) in [
+                (-1, -1),
+                (-1, 0),
+                (-1, 1),
+                (0, -1),
+                (0, 1),
+                (1, -1),
+                (1, 0),
+                (1, 1),
+            ] {
+                if matches_word(&grid, i, j, di, dj, "XMAS") {
+                    result1 += 1;
+                }
+            }
+
+            // Part 2: Find X-MAS pattern (A at center)
+            if i > 0 && i < rows - 1 && j > 0 && j < cols - 1 && grid[i][j] == 'A' {
+                let d1 = (grid[i - 1][j - 1], grid[i + 1][j + 1]);
+                let d2 = (grid[i - 1][j + 1], grid[i + 1][j - 1]);
+                if matches!(d1, ('M', 'S') | ('S', 'M')) && matches!(d2, ('M', 'S') | ('S', 'M')) {
+                    result2 += 1;
                 }
             }
         }
     }
-    println!("{result1}");
-    println!("{result2}");
+    dbg!(result1, result2);
+}
+
+fn matches_word(grid: &[Vec<char>], row: usize, col: usize, dr: i32, dc: i32, word: &str) -> bool {
+    let chars: Vec<char> = word.chars().collect();
+    for (i, &ch) in chars.iter().enumerate() {
+        let r = row as i32 + dr * i as i32;
+        let c = col as i32 + dc * i as i32;
+        if r < 0 || r >= grid.len() as i32 || c < 0 || c >= grid[0].len() as i32 {
+            return false;
+        }
+        if grid[r as usize][c as usize] != ch {
+            return false;
+        }
+    }
+    true
 }
