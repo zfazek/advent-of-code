@@ -4,7 +4,8 @@ fn main() {
     let input = std::fs::read_to_string("../input.txt").unwrap();
     let mut va = Vec::new();
     let mut vb = Vec::new();
-    let mut mb: HashMap<i64, i64> = HashMap::new();
+    let mut mb = HashMap::new();
+
     for line in input.lines() {
         let (a, b) = line.split_once("   ").unwrap();
         va.push(a.parse::<i64>().unwrap());
@@ -12,13 +13,12 @@ fn main() {
         vb.push(b);
         *mb.entry(b).or_default() += 1;
     }
-    va.sort();
-    vb.sort();
-    let result1: i64 = std::iter::zip(&va, vb).map(|(a, b)| (a - b).abs()).sum();
-    let result2: i64 = va
-        .iter()
-        .filter(|&x| mb.contains_key(x))
-        .map(|x| x * mb.get(x).unwrap())
-        .sum();
+
+    va.sort_unstable();
+    vb.sort_unstable();
+
+    let result1: i64 = va.iter().zip(&vb).map(|(a, b)| (a - b).abs()).sum();
+    let result2: i64 = va.iter().map(|x| x * mb.get(x).unwrap_or(&0)).sum();
+
     dbg!(result1, result2);
 }
