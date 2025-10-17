@@ -35,16 +35,13 @@ fn main() {
 }
 
 fn matches_word(grid: &[Vec<char>], row: usize, col: usize, dr: i32, dc: i32, word: &str) -> bool {
-    let chars: Vec<char> = word.chars().collect();
-    for (i, &ch) in chars.iter().enumerate() {
+    word.chars().enumerate().all(|(i, ch)| {
         let r = row as i32 + dr * i as i32;
         let c = col as i32 + dc * i as i32;
-        if r < 0 || r >= grid.len() as i32 || c < 0 || c >= grid[0].len() as i32 {
-            return false;
-        }
-        if grid[r as usize][c as usize] != ch {
-            return false;
-        }
-    }
-    true
+        r >= 0
+            && r < grid.len() as i32
+            && c >= 0
+            && c < grid[0].len() as i32
+            && grid[r as usize][c as usize] == ch
+    })
 }
