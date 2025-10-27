@@ -4,23 +4,22 @@ fn main() {
     two(&file);
 }
 
-fn get_priority(m: char) -> i32 {
-    let n = m as i32;
+fn get_priority(n: u8) -> i32 {
     if n >= 97 {
-        return n - 96;
+        (n - 96).into()
     } else {
-        return n - 65 + 27;
+        (n - 65 + 27).into()
     }
 }
 
 fn one(file: &str) {
     let mut sum = 0;
     for line in file.lines() {
-        let l: Vec<char> = line.chars().collect();
-        'outer: for i in 0..l.len() / 2 {
-            for j in l.len() / 2..l.len() {
-                if l[i] == l[j] {
-                    sum += get_priority(l[i]);
+        let line = line.as_bytes();
+        'outer: for i in 0..line.len() / 2 {
+            for j in line.len() / 2..line.len() {
+                if line[i] == line[j] {
+                    sum += get_priority(line[i]);
                     break 'outer;
                 }
             }
@@ -34,15 +33,15 @@ fn two(file: &str) {
     let mut sum = 0;
     let mut x = 0;
     loop {
-        let l1: Vec<char> = lines[x].chars().collect();
-        let l2: Vec<char> = lines[x+1].chars().collect();
-        let l3: Vec<char> = lines[x+2].chars().collect();
+        let line1 = lines[x].as_bytes();
+        let line2 = lines[x + 1].as_bytes();
+        let line3 = lines[x + 2].as_bytes();
         x += 3;
-        'outer: for i in 0..l1.len() {
-            for j in 0..l2.len() {
-                for k in 0..l3.len() {
-                    if l1[i] == l2[j] && l1[i] == l3[k] {
-                        sum += get_priority(l1[i]);
+        'outer: for i in 0..line1.len() {
+            for j in 0..line2.len() {
+                for k in 0..line3.len() {
+                    if line1[i] == line2[j] && line1[i] == line3[k] {
+                        sum += get_priority(line1[i]);
                         break 'outer;
                     }
                 }
