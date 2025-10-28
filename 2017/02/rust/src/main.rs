@@ -4,39 +4,39 @@ fn main() {
     two(&input);
 }
 
-fn one(input: &String) {
-    let sum = input
+fn one(input: &str) {
+    let sum: i32 = input
         .lines()
         .map(|line| {
-            let l: Vec<_> = line
+            let (min, max) = line
                 .split_whitespace()
                 .map(|x| x.parse::<i32>().unwrap())
-                .collect();
-            let min = l.iter().min().unwrap();
-            let max = l.iter().max().unwrap();
+                .fold((i32::MAX, i32::MIN), |(min, max), n| {
+                    (min.min(n), max.max(n))
+                });
             max - min
         })
-        .sum::<i32>();
+        .sum();
     println!("{}", sum);
 }
 
-fn two(input: &String) {
-    let mut sum = 0;
-    for line in input.lines() {
-        let mut l: Vec<_> = line
-            .split_whitespace()
-            .map(|x| x.parse::<i32>().unwrap())
-            .collect();
-        l.sort_by(|a, b| b.cmp(a));
-        for (i, n) in l.iter().enumerate() {
-            for (j, m) in l.iter().enumerate() {
-                if i < j {
-                    if n % m == 0 {
-                        sum += n / m;
+fn two(input: &str) {
+    let sum: i32 = input
+        .lines()
+        .map(|line| {
+            let nums: Vec<i32> = line
+                .split_whitespace()
+                .map(|x| x.parse().unwrap())
+                .collect();
+            for &a in &nums {
+                for &b in &nums {
+                    if a != b && a % b == 0 {
+                        return a / b;
                     }
                 }
             }
-        }
-    }
+            0
+        })
+        .sum();
     println!("{}", sum);
 }
