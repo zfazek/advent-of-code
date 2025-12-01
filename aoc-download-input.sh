@@ -4,20 +4,27 @@
 
 # Default to current year and day if not provided as arguments
 # Example usage: ./download_aoc_input.sh 2023 1
-YEAR=${1:-$(date +%Y)}
-DAY=${2:-$(date +%d)}
+YEAR=$(date +%Y)
+MONTH=$(date +%m)
+DAY=$(date +%-d)
 
-# Check for the required session cookie
-if [ -z "${AOC_SESSION}" ]; then
-  echo "Error: AOC_SESSION environment variable is not set." >&2
-  echo "Please set it with the value of your 'session' cookie from adventofcode.com." >&2
-  exit 1
+# Ensure month is December
+if (( MONTH != 12)); then
+    echo "Error: Month must be December" >&2
+    exit 1
 fi
 
 # Ensure day is between 1 and 25
 if (( DAY < 1 || DAY > 25 )); then
     echo "Error: Day must be between 1 and 25." >&2
     exit 1
+fi
+
+# Check for the required session cookie
+if [ -z "${AOC_SESSION}" ]; then
+  echo "Error: AOC_SESSION environment variable is not set." >&2
+  echo "Please set it with the value of your 'session' cookie from adventofcode.com." >&2
+  exit 1
 fi
 
 # Pad day with a leading zero if it's a single digit (for file naming)
@@ -35,12 +42,13 @@ echo "Attempting to download input for Year ${YEAR}, Day ${DAY} to ${OUTPUT_FILE
 
 # Construct the URL
 URL="https://adventofcode.com/${YEAR}/day/${DAY}/input"
+echo "URL: $URL"
 
 # Use curl to download the input
 # -s: Silent mode
 # -b: Pass the cookie string
 # -o: Output to the specified file
-curl -s -b "session=${AOC_SESSION}" "${URL}" -o "${OUTPUT_FILE}"
+curl -b "session=${AOC_SESSION}" "${URL}" -o "${OUTPUT_FILE}"
 
 # Check the curl exit status
 if [ $? -eq 0 ]; then
