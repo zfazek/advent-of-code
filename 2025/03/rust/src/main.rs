@@ -1,8 +1,9 @@
 fn main() {
+    let input = include_str!("../../input.txt");
     [2, 12]
         .iter()
         .map(|&n| {
-            include_str!("../../input.txt")
+            input
                 .lines()
                 .map(|line| {
                     let mut idx = 0;
